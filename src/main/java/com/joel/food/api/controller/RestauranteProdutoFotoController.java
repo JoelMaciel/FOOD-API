@@ -34,7 +34,7 @@ public class RestauranteProdutoFotoController {
 			fotoProdutoInput.getArquivo().transferTo(arquivoFoto);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} 
+		}
 	}
 
 }
