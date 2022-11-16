@@ -1,7 +1,17 @@
 {
-    "nome": "New York Barbecue",
+    "nome": "Comida Mineira",
     "taxaFrete": 12,
     "cozinha": {
-        "id": 2
+        "id": 1
+    },
+    "endereco": {
+         "cep": 61645465,
+         "logradouro": "Rua olavo",
+         "numero": "1321211",
+         "complemento": "altos",
+          "bairro": "Parque Albano",
+	      "cidade": {
+              "id": 2
+          }
     }
-}
+} 
