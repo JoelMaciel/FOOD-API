@@ -11,7 +11,7 @@ em espécie.
 
 ## Modelo Conceitual
 
-![Conceptual Model](https://github.com/JoelMaciel/Product-Catalog/blob/readm/backend/assets/modelo-conceitual-catalof.png)
+![Conceptual Model](https://github.com/JoelMaciel/Product-Catalog/blob/readm/backend/assets/diagrama-de-classes-de-dominio.jpg)
 
 # Tecnologias usadas.
 
