@@ -1,6 +1,6 @@
 # Food API
 
-[![NPM](https://img.shields.io/npm/l/react)](https://github.com/JoelMaciel/Product-Catalog/blob/readm/LICENCE)
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/JoelMaciel/FOOD-API/blob/upload_arquivos/LICENCE)
 
 # Sobre o projeto.
 
