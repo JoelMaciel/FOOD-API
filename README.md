@@ -31,7 +31,7 @@ em espécie.
 
 # Como rodar o projeto
 
-Pré-requisito : Java 11
+Pré-requisito : Java 17
 
 ```bash
 # clonar repositório
