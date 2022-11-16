@@ -4,6 +4,8 @@
 
 # Sobre o projeto.
 
+## Projeto em construção....
+
 O Projeto dessa API é baseado no aplicativo IFood onde os clientes se cadastram e podem  fazer pedidos de comidas em geral,
 podendo escolher os restaurantes por Estados e Cidades desejadas. Podem escolher formas de pagamento cart]ao de crédito, débito ou
 em espécie.
