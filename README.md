@@ -12,7 +12,7 @@ em espécie.
 
 ## Modelo Conceitual
 
-![Conceptual Model](https://github.com/JoelMaciel/FOOD-API/blob/mapeando_fotoproduto/assets/diagrama-de-classes-de-dominio.jpg)
+![Conceptual Model](https://github.com/JoelMaciel/FOOD-API/blob/upload_arquivos/assets/diagrama-de-classes-de-dominio.jpg)
 
 # Tecnologias usadas.
 
