@@ -1,13 +1,11 @@
 package com.joelmaciel.food.domain.repository;
 
 import com.joelmaciel.food.domain.model.Kitchen;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
 
-public interface KitchenRepository {
 
-    List<Kitchen> findAll();
-    Kitchen findById(Long id);
-    Kitchen save(Kitchen kitchen);
-    void remove(Kitchen kitchen);
 }
