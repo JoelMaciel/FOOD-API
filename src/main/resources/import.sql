@@ -1,5 +1,7 @@
 insert into kitchen (id, name) values (1, 'Thailand');
 insert into kitchen (id, name) values (2, 'Indian');
+insert into kitchen (id, name) values (3, 'Japonese');
+
 
 insert into restaurant (name, freight_rate, kitchen_id) values ('Sushi Sensation', 12, 1);
 insert into restaurant (name, freight_rate, kitchen_id)values ('Veggie Delight', 8.50, 1);
