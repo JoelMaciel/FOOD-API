@@ -49,6 +49,10 @@ public class Restaurant {
     private Kitchen kitchen;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Product>  products;
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurant_payment_method",
     joinColumns = @JoinColumn(name = "restaurant_id"),
