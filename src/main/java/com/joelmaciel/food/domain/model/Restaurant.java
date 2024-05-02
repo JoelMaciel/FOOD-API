@@ -50,12 +50,12 @@ public class Restaurant {
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
-    private List<Product>  products;
+    private List<Product> products;
 
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurant_payment_method",
-    joinColumns = @JoinColumn(name = "restaurant_id"),
-    inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
     private List<PaymentMethod> paymentMethods = new ArrayList<>();
 }
