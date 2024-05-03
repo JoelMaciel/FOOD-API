@@ -3,7 +3,10 @@ package com.joelmaciel.food.domain.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -14,10 +17,6 @@ public class Permission {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String description;
 }

@@ -10,14 +10,12 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-public class Grupo {
+public class Group {
 
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
 
     @ManyToMany

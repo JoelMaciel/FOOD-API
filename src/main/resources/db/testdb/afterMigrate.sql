@@ -1,3 +1,29 @@
+set foreign_key_checks = 0;
+
+DELETE FROM city;
+DELETE FROM group_permission;
+DELETE FROM `group`;
+DELETE FROM kitchen;
+DELETE FROM payment_method;
+DELETE FROM permission;
+DELETE FROM product;
+DELETE FROM restaurant;
+DELETE FROM restaurant_payment_method;
+DELETE FROM state;
+DELETE FROM `user`;
+DELETE FROM user_group;
+
+set foreign_key_checks = 1;
+
+ALTER TABLE city AUTO_INCREMENT = 1;
+ALTER TABLE `group` AUTO_INCREMENT = 1;
+ALTER TABLE kitchen AUTO_INCREMENT = 1;
+ALTER TABLE payment_method AUTO_INCREMENT = 1;
+ALTER TABLE permission AUTO_INCREMENT = 1;
+ALTER TABLE product AUTO_INCREMENT = 1;
+ALTER TABLE restaurant AUTO_INCREMENT = 1;
+ALTER TABLE state AUTO_INCREMENT = 1;
+ALTER TABLE `user` AUTO_INCREMENT = 1;
 
 
 insert into kitchen (id, name) values (1, 'Thailand');

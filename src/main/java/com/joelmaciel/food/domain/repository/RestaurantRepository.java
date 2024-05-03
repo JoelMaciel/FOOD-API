@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    @Query("from Restaurant r join fetch r.kitchen left join fetch r.paymentMethods")
+    @Query("from Restaurant r join fetch r.kitchen")
     List<Restaurant> findAll();
 
 
