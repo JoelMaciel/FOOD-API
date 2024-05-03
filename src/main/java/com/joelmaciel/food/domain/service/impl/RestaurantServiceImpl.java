@@ -56,6 +56,9 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .name(restaurantRequest.getName())
                 .freightRate(restaurantRequest.getFreightRate())
                 .kitchen(kitchen)
+                .registrationDate(restaurant.getRegistrationDate())
+                .address(restaurant.getAddress())
+                .paymentMethods(restaurant.getPaymentMethods())
                 .build();
 
         return restaurantRepository.save(restaurant);

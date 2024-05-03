@@ -1,17 +1,15 @@
 package com.joelmaciel.food.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Kitchen {
+public class Product {
 
     @Id
     @EqualsAndHashCode.Include
@@ -20,9 +18,14 @@ public class Kitchen {
 
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
+    private BigDecimal price;
+    @Column(nullable = false)
+    private Boolean active;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "kitchen")
-    private List<Restaurant> restaurants = new ArrayList<>();
-
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Restaurant restaurant;
 }

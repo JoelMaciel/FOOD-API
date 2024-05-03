@@ -1,6 +1,5 @@
 package com.joelmaciel.food.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,10 +7,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
-public class Kitchen {
+public class Grupo {
 
     @Id
     @EqualsAndHashCode.Include
@@ -21,8 +20,9 @@ public class Kitchen {
     @Column(nullable = false)
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "kitchen")
-    private List<Restaurant> restaurants = new ArrayList<>();
-
+    @ManyToMany
+    @JoinTable(name = "group_permission",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private List<Permission> permissions = new ArrayList<>();
 }
