@@ -1,25 +1,31 @@
 package com.joelmaciel.food.domain.model;
 
+import com.joelmaciel.food.domain.Order;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
-public class Product {
+public class OrderItem {
 
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private Boolean active;
+    private BigDecimal unitPrice;
+    private BigDecimal totalPrice;
+    private Integer quantity;
+    private String observation;
 
     @ManyToOne
-    private Restaurant restaurant;
+    @JoinColumn(nullable = false)
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Product product;
 }

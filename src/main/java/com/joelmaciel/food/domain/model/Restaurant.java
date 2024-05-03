@@ -23,11 +23,7 @@ public class Restaurant {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private BigDecimal freightRate;
 
     @JsonIgnore
@@ -35,18 +31,14 @@ public class Restaurant {
     private Address address;
 
     @JsonIgnore
-    @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime registrationDate;
 
     @JsonIgnore
-    @Column(nullable = false)
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Kitchen kitchen;
 
     @JsonIgnore
