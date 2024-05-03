@@ -44,6 +44,7 @@ public class Restaurant {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(nullable = false)
     private Kitchen kitchen;
