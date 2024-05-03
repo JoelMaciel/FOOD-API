@@ -5,10 +5,15 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    generate-ddl: true
-    hibernate:
-      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  flyway:
+    locations: classpath:db/migration, classpath:db/testdb
+#      javax:
+#        persistence:
+#          schema-generation:
+#            scripts:
+#              action: create
+#              create-target: src/main/resource/ddl.sql
