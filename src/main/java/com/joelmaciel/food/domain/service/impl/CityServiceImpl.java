@@ -4,10 +4,8 @@ import com.joelmaciel.food.domain.exception.BusinessException;
 import com.joelmaciel.food.domain.exception.CityNotFoundException;
 import com.joelmaciel.food.domain.exception.EntityInUseException;
 import com.joelmaciel.food.domain.model.City;
-import com.joelmaciel.food.domain.model.State;
 import com.joelmaciel.food.domain.repository.CityRepository;
 import com.joelmaciel.food.domain.service.CityService;
-import com.joelmaciel.food.domain.service.StateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -21,10 +19,9 @@ public class CityServiceImpl implements CityService {
 
     public static final String CITY_IN_USE = "City cannot be excluded as it is in use";
     public static final String STATE_NOT_FOUND = "ID state %d not found";
+    public static final String MSG_STATE_NOT_FOUND = "There is no state registered with this id";
 
     private final CityRepository cityRepository;
-    private final StateService stateService;
-
 
     @Override
     public List<City> findAll() {
@@ -33,7 +30,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City findById(Long cityId) {
-        return cityById(cityId);
+        return optionalCity(cityId);
     }
 
     @Override
@@ -50,19 +47,20 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional
     public City update(Long cityId, City cityRequest) {
-        City city = cityById(cityId);
-        State state = stateService.findById(cityRequest.getState().getId());
-
-        city.setName(cityRequest.getName());
-        city.setState(state);
-
-        return save(city);
+        City city = optionalCity(cityId);
+        try {
+            city.setName(cityRequest.getName());
+            city.setState(cityRequest.getState());
+            return cityRepository.save(cityRequest);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException(MSG_STATE_NOT_FOUND);
+        }
     }
 
     @Override
     @Transactional
     public void remove(Long cityId) {
-        cityById(cityId);
+        optionalCity(cityId);
         try {
             cityRepository.deleteById(cityId);
         } catch (DataIntegrityViolationException exception) {
@@ -70,7 +68,7 @@ public class CityServiceImpl implements CityService {
         }
     }
 
-    public City cityById(Long cityId) {
+    public City optionalCity(Long cityId) {
         return cityRepository.findById(cityId)
                 .orElseThrow(() -> new CityNotFoundException(cityId));
     }

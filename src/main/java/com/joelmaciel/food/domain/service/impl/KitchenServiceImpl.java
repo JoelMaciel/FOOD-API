@@ -7,6 +7,7 @@ import com.joelmaciel.food.domain.repository.KitchenRepository;
 import com.joelmaciel.food.domain.service.KitchenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KitchenServiceImpl implements KitchenService {
 
-    public static final String KITCHEN_IN_USE = "Kitchen cannot be excluded as it is in use";
+    public static final String MSG_KITCHEN_IN_USE = "Kitchen cannot be excluded as it is in use";
+    private static final String MSG_KITCHEN_NOT_FOUND = "There is no state with this code %d";
     private final KitchenRepository kitchenRepository;
 
     @Override
@@ -26,7 +28,7 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public Kitchen findById(Long kitchenId) {
-        return kitchenById(kitchenId);
+        return optionalKitchen(kitchenId);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     @Transactional
     public Kitchen update(Long kitchenId, Kitchen kitchen) {
-        Kitchen kitchenActual = kitchenById(kitchenId);
+        Kitchen kitchenActual = optionalKitchen(kitchenId);
         kitchenActual.setName(kitchen.getName());
         return save(kitchenActual);
     }
@@ -46,16 +48,18 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     @Transactional
     public void remove(Long kitchenId) {
-        kitchenById(kitchenId);
         try {
             kitchenRepository.deleteById(kitchenId);
         } catch (DataIntegrityViolationException exception) {
-            throw new EntityInUseException(KITCHEN_IN_USE);
+            throw new EntityInUseException(MSG_KITCHEN_IN_USE);
+        } catch (EmptyResultDataAccessException e) {
+            throw new KitchenNotFoundException(String.format(MSG_KITCHEN_NOT_FOUND, kitchenId));
         }
     }
 
-    public Kitchen kitchenById(Long kitchenId) {
+    public Kitchen optionalKitchen(Long kitchenId) {
         return kitchenRepository.findById(kitchenId)
                 .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
     }
+
 }

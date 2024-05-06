@@ -1,12 +1,14 @@
 package com.joelmaciel.food.domain.service.impl;
 
-import com.joelmaciel.food.domain.exception.RestuarantNotFoundException;
+import com.joelmaciel.food.domain.exception.BusinessException;
+import com.joelmaciel.food.domain.exception.RestaurantNotFoundException;
 import com.joelmaciel.food.domain.model.Kitchen;
 import com.joelmaciel.food.domain.model.Restaurant;
 import com.joelmaciel.food.domain.repository.RestaurantRepository;
 import com.joelmaciel.food.domain.service.KitchenService;
 import com.joelmaciel.food.domain.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService {
 
+    public static final String MSD_KITCHEN_NOT_FOUND = "There is no saved kitchen with this id";
     private final RestaurantRepository restaurantRepository;
     private final KitchenService kitchenService;
 
@@ -26,28 +29,30 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant findById(Long restaurantId) {
-        return restaurantById(restaurantId);
+        return optinalRestaurant(restaurantId);
     }
 
     @Override
     @Transactional
     public Restaurant save(Restaurant restaurant) {
-        Kitchen kitchen = kitchenService.findById(restaurant.getKitchen().getId());
-        restaurant.setKitchen(kitchen);
-        return restaurantRepository.save(restaurant);
+        try {
+            return restaurantRepository.save(restaurant);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException(MSD_KITCHEN_NOT_FOUND);
+        }
     }
 
     @Override
     public Restaurant update(Long restaurantId, Restaurant restaurantRequest) {
-        Restaurant restaurant = restaurantById(restaurantId);
+        Restaurant restaurant = optinalRestaurant(restaurantId);
         Kitchen kitchen = kitchenService.findById(restaurantRequest.getKitchen().getId());
 
         return updateRestaurantBuilder(restaurantRequest, restaurant, kitchen);
     }
 
-    public Restaurant restaurantById(Long restaurantId) {
+    public Restaurant optinalRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new RestuarantNotFoundException(restaurantId));
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
     }
 
     private Restaurant updateRestaurantBuilder(Restaurant restaurantRequest, Restaurant restaurant, Kitchen kitchen) {

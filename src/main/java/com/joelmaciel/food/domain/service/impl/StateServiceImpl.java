@@ -25,7 +25,7 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public State findById(Long stateId) {
-        return stateById(stateId);
+        return optionalState(stateId);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class StateServiceImpl implements StateService {
     @Override
     @Transactional
     public State update(Long stateId, State stateRequest) {
-        State state = stateById(stateId);
+        State state = optionalState(stateId);
         state.setName(stateRequest.getName());
         return save(state);
     }
@@ -45,7 +45,7 @@ public class StateServiceImpl implements StateService {
     @Override
     @Transactional
     public void remove(Long stateId) {
-        stateById(stateId);
+        optionalState(stateId);
         try {
             stateRepository.deleteById(stateId);
         } catch (DataIntegrityViolationException exception) {
@@ -53,7 +53,7 @@ public class StateServiceImpl implements StateService {
         }
     }
 
-    public State stateById(Long stateId) {
+    public State optionalState(Long stateId) {
         return stateRepository.findById(stateId)
                 .orElseThrow(() -> new StateNotFoundException(stateId));
     }
