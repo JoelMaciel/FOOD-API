@@ -1,4 +1,4 @@
-package com.joelmaciel.food.domain;
+package com.joelmaciel.food.domain.model;
 
 import com.joelmaciel.food.domain.enums.OrderStatus;
 import com.joelmaciel.food.domain.model.*;

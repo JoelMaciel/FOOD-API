@@ -1,6 +1,5 @@
 package com.joelmaciel.food.domain.model;
 
-import com.joelmaciel.food.domain.Order;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
