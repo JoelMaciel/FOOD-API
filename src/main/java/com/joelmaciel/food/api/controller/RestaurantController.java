@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class RestaurantController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant add(@RequestBody Restaurant restaurant) {
+    public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
         return restaurantService.save(restaurant);
     }
 
