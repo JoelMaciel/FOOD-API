@@ -1,5 +1,8 @@
 package com.joelmaciel.food.domain.service.impl;
 
+import com.joelmaciel.food.api.dto.converter.RestaurantConverter;
+import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
+import com.joelmaciel.food.api.dto.response.RestaurantDTO;
 import com.joelmaciel.food.domain.exception.BusinessException;
 import com.joelmaciel.food.domain.exception.RestaurantNotFoundException;
 import com.joelmaciel.food.domain.model.Kitchen;
@@ -23,49 +26,42 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final KitchenService kitchenService;
 
     @Override
-    public List<Restaurant> findAll() {
-        return restaurantRepository.findAll();
+    public List<RestaurantDTO> findAll() {
+        return RestaurantConverter.toDTOList(restaurantRepository.findAll());
     }
 
     @Override
-    public Restaurant findById(Long restaurantId) {
-        return optinalRestaurant(restaurantId);
+    public RestaurantDTO findById(Long restaurantId) {
+        return RestaurantConverter.toDTO(optinalRestaurant(restaurantId));
     }
 
     @Override
     @Transactional
-    public Restaurant save(Restaurant restaurant) {
+    public RestaurantDTO save(RestaurantRequestDTO restaurantRequestDTO) {
         try {
-            return restaurantRepository.save(restaurant);
+            Restaurant restaurant = RestaurantConverter.toEntity(restaurantRequestDTO);
+            Kitchen kitchen = kitchenService.optionalKitchen(restaurantRequestDTO.getKitchenId());
+            restaurant.setKitchen(kitchen);
+            return RestaurantConverter.toDTO(restaurantRepository.save(restaurant));
         } catch (DataIntegrityViolationException e) {
             throw new BusinessException(MSD_KITCHEN_NOT_FOUND);
         }
     }
 
     @Override
-    public Restaurant update(Long restaurantId, Restaurant restaurantRequest) {
+    @Transactional
+    public RestaurantDTO update(Long restaurantId, RestaurantRequestDTO restaurantRequestDTO) {
         Restaurant restaurant = optinalRestaurant(restaurantId);
-        Kitchen kitchen = kitchenService.findById(restaurantRequest.getKitchen().getId());
+        Kitchen kitchen = kitchenService.optionalKitchen(restaurantRequestDTO.getKitchenId());
 
-        return updateRestaurantBuilder(restaurantRequest, restaurant, kitchen);
+        Restaurant updateRestaurant = RestaurantConverter.updateRestaurant(restaurantRequestDTO, restaurant); // Passa o restaurante original
+        updateRestaurant.setKitchen(kitchen);
+
+        return RestaurantConverter.toDTO(restaurantRepository.save(updateRestaurant));
     }
 
     public Restaurant optinalRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
-    }
-
-    private Restaurant updateRestaurantBuilder(Restaurant restaurantRequest, Restaurant restaurant, Kitchen kitchen) {
-        restaurant = Restaurant.builder()
-                .id(restaurant.getId())
-                .name(restaurantRequest.getName())
-                .freightRate(restaurantRequest.getFreightRate())
-                .kitchen(kitchen)
-                .registrationDate(restaurant.getRegistrationDate())
-                .address(restaurant.getAddress())
-                .paymentMethods(restaurant.getPaymentMethods())
-                .build();
-
-        return restaurantRepository.save(restaurant);
     }
 }

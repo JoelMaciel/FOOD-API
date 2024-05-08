@@ -1,19 +1,23 @@
 package com.joelmaciel.food.domain.service;
 
+import com.joelmaciel.food.api.dto.request.StateRequestDTO;
+import com.joelmaciel.food.api.dto.response.StateDTO;
 import com.joelmaciel.food.domain.model.State;
 
 import java.util.List;
 
 public interface StateService {
 
-    List<State> findAll();
+    List<StateDTO> findAll();
 
-    State findById(Long stateId);
+    StateDTO findById(Long stateId);
 
-    State save(State stateRequest);
+    StateDTO save(StateRequestDTO stateRequest);
 
-    State update(Long stateId, State stateRequest);
+    StateDTO update(Long stateId, StateRequestDTO stateRequest);
 
     void remove(Long stateId);
+
+    State optionalState(Long stateId);
 
 }

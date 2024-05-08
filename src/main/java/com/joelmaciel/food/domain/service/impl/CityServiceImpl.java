@@ -1,11 +1,17 @@
 package com.joelmaciel.food.domain.service.impl;
 
+import com.joelmaciel.food.api.dto.converter.CityConverter;
+import com.joelmaciel.food.api.dto.request.CityRequestDTO;
+import com.joelmaciel.food.api.dto.response.CityDTO;
 import com.joelmaciel.food.domain.exception.BusinessException;
 import com.joelmaciel.food.domain.exception.CityNotFoundException;
 import com.joelmaciel.food.domain.exception.EntityInUseException;
+import com.joelmaciel.food.domain.exception.StateNotFoundException;
 import com.joelmaciel.food.domain.model.City;
+import com.joelmaciel.food.domain.model.State;
 import com.joelmaciel.food.domain.repository.CityRepository;
 import com.joelmaciel.food.domain.service.CityService;
+import com.joelmaciel.food.domain.service.StateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -17,6 +23,8 @@ import java.util.List;
 @Service
 public class CityServiceImpl implements CityService {
 
+    private final StateService stateService;
+
     public static final String CITY_IN_USE = "City cannot be excluded as it is in use";
     public static final String STATE_NOT_FOUND = "ID state %d not found";
     public static final String MSG_STATE_NOT_FOUND = "There is no state registered with this id";
@@ -24,35 +32,37 @@ public class CityServiceImpl implements CityService {
     private final CityRepository cityRepository;
 
     @Override
-    public List<City> findAll() {
-        return cityRepository.findAll();
+    public List<CityDTO> findAll() {
+        return CityConverter.toDTOList(cityRepository.findAll());
     }
 
     @Override
-    public City findById(Long cityId) {
-        return optionalCity(cityId);
+    public CityDTO findById(Long cityId) {
+        return CityConverter.toDTO(optionalCity(cityId));
     }
 
-    @Override
-    @Transactional
-    public City save(City cityRequest) {
+    public CityDTO save(CityRequestDTO cityRequest) {
         try {
-            return cityRepository.save(cityRequest);
-        } catch (DataIntegrityViolationException e) {
+            State state = stateService.optionalState(cityRequest.getStateId());
+            City city = CityConverter.toEntity(cityRequest, state);
+            return CityConverter.toDTO(cityRepository.save(city));
+        } catch (StateNotFoundException e) {
             throw new BusinessException(
-                    String.format(STATE_NOT_FOUND, cityRequest.getState().getId()));
+                    String.format(STATE_NOT_FOUND, cityRequest.getStateId()));
         }
     }
 
     @Override
     @Transactional
-    public City update(Long cityId, City cityRequest) {
-        City city = optionalCity(cityId);
+    public CityDTO update(Long cityId, CityRequestDTO cityRequest) {
         try {
-            city.setName(cityRequest.getName());
-            city.setState(cityRequest.getState());
-            return cityRepository.save(cityRequest);
-        } catch (DataIntegrityViolationException e) {
+            City city = optionalCity(cityId);
+            city = CityConverter.updateCity(cityRequest, city);
+            State state = stateService.optionalState(cityRequest.getStateId());
+            city.setState(state);
+
+            return CityConverter.toDTO(cityRepository.save(city));
+        } catch (StateNotFoundException e) {
             throw new BusinessException(MSG_STATE_NOT_FOUND);
         }
     }

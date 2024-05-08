@@ -1,5 +1,8 @@
 package com.joelmaciel.food.domain.service.impl;
 
+import com.joelmaciel.food.api.dto.converter.KitchenConverter;
+import com.joelmaciel.food.api.dto.request.KitchenRequestDTO;
+import com.joelmaciel.food.api.dto.response.KitchenDTO;
 import com.joelmaciel.food.domain.exception.EntityInUseException;
 import com.joelmaciel.food.domain.exception.KitchenNotFoundException;
 import com.joelmaciel.food.domain.model.Kitchen;
@@ -22,27 +25,28 @@ public class KitchenServiceImpl implements KitchenService {
     private final KitchenRepository kitchenRepository;
 
     @Override
-    public List<Kitchen> findAll() {
-        return kitchenRepository.findAll();
+    public List<KitchenDTO> findAll() {
+        return KitchenConverter.toDTOList(kitchenRepository.findAll());
     }
 
     @Override
-    public Kitchen findById(Long kitchenId) {
-        return optionalKitchen(kitchenId);
-    }
-
-    @Override
-    @Transactional
-    public Kitchen save(Kitchen kitchen) {
-        return kitchenRepository.save(kitchen);
+    public KitchenDTO findById(Long kitchenId) {
+        return KitchenConverter.toDTO(optionalKitchen(kitchenId));
     }
 
     @Override
     @Transactional
-    public Kitchen update(Long kitchenId, Kitchen kitchen) {
+    public KitchenDTO save(KitchenRequestDTO kitchenRequestDTO) {
+        Kitchen kitchen = KitchenConverter.toEntity(kitchenRequestDTO);
+        return KitchenConverter.toDTO(kitchenRepository.save(kitchen));
+    }
+
+    @Override
+    @Transactional
+    public KitchenDTO update(Long kitchenId, KitchenRequestDTO kitchenRequestDTO) {
         Kitchen kitchenActual = optionalKitchen(kitchenId);
-        kitchenActual.setName(kitchen.getName());
-        return save(kitchenActual);
+        kitchenActual.setName(kitchenRequestDTO.getName());
+        return KitchenConverter.toDTO(kitchenRepository.save(kitchenActual));
     }
 
     @Override
@@ -57,6 +61,7 @@ public class KitchenServiceImpl implements KitchenService {
         }
     }
 
+    @Override
     public Kitchen optionalKitchen(Long kitchenId) {
         return kitchenRepository.findById(kitchenId)
                 .orElseThrow(() -> new KitchenNotFoundException(kitchenId));

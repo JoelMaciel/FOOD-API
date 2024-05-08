@@ -1,5 +1,7 @@
 package com.joelmaciel.food.domain.service;
 
+import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
+import com.joelmaciel.food.api.dto.response.RestaurantDTO;
 import com.joelmaciel.food.domain.model.Restaurant;
 
 import java.util.List;
@@ -7,11 +9,11 @@ import java.util.List;
 
 public interface RestaurantService {
 
-    List<Restaurant> findAll();
+    List<RestaurantDTO> findAll();
 
-    Restaurant findById(Long restaurantId);
+    RestaurantDTO findById(Long restaurantId);
 
-    Restaurant save(Restaurant restaurant);
+    RestaurantDTO save(RestaurantRequestDTO restaurantRequestDTO);
 
-    Restaurant update(Long restaurantId, Restaurant restaurantRequest);
+    RestaurantDTO update(Long restaurantId, RestaurantRequestDTO restaurantRequestDTO);
 }

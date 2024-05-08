@@ -1,18 +1,21 @@
 package com.joelmaciel.food.domain.service;
 
+import com.joelmaciel.food.api.dto.request.KitchenRequestDTO;
+import com.joelmaciel.food.api.dto.response.KitchenDTO;
 import com.joelmaciel.food.domain.model.Kitchen;
 
 import java.util.List;
 
 public interface KitchenService {
 
-    List<Kitchen> findAll();
+    List<KitchenDTO> findAll();
 
-    Kitchen findById(Long kitchenId);
+    KitchenDTO findById(Long kitchenId);
 
-    Kitchen save(Kitchen kitchen);
+    KitchenDTO save(KitchenRequestDTO kitchenRequestDTO);
 
-    Kitchen update(Long kitchenId, Kitchen kitchen);
+    KitchenDTO update(Long kitchenId, KitchenRequestDTO kitchenRequestDTO);
 
     void remove(Long kitchenId);
+    Kitchen optionalKitchen(Long kitchenId);
 }
