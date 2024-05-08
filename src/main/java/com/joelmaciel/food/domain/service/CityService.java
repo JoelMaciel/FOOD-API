@@ -1,18 +1,20 @@
 package com.joelmaciel.food.domain.service;
 
+import com.joelmaciel.food.api.dto.request.CityRequestDTO;
+import com.joelmaciel.food.api.dto.response.CityDTO;
 import com.joelmaciel.food.domain.model.City;
 
 import java.util.List;
 
 public interface CityService {
 
-    List<City> findAll();
+    List<CityDTO> findAll();
 
-    City findById(Long cityId);
+    CityDTO findById(Long cityId);
 
-    City save(City cityRequest);
+    CityDTO save(CityRequestDTO cityRequest);
 
-    City update(Long cityId, City cityRequest);
+    CityDTO update(Long cityId, CityRequestDTO cityRequest);
 
     void remove(Long cityId);
 }

@@ -1,11 +1,12 @@
 package com.joelmaciel.food.api.controller;
 
+import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
+import com.joelmaciel.food.api.dto.response.RestaurantDTO;
 import com.joelmaciel.food.domain.model.Restaurant;
 import com.joelmaciel.food.domain.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,24 +19,24 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @GetMapping
-    public List<Restaurant> findAll() {
+    public List<RestaurantDTO> findAll() {
         return restaurantService.findAll();
     }
 
     @GetMapping("/{restaurantId}")
-    public Restaurant findById(@PathVariable Long restaurantId) {
+    public RestaurantDTO findById(@PathVariable Long restaurantId) {
         return restaurantService.findById(restaurantId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
-        return restaurantService.save(restaurant);
+    public RestaurantDTO add(@RequestBody @Valid RestaurantRequestDTO restaurantRequestDTO) {
+        return restaurantService.save(restaurantRequestDTO);
     }
 
     @PutMapping("/{restaurantId}")
-    public Restaurant update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurantRequest) {
-        return restaurantService.update(restaurantId, restaurantRequest);
+    public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantRequestDTO restaurantRequestDTO) {
+        return restaurantService.update(restaurantId, restaurantRequestDTO);
     }
 
 }

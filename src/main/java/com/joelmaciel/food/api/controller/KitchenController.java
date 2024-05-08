@@ -1,11 +1,14 @@
 package com.joelmaciel.food.api.controller;
 
+import com.joelmaciel.food.api.dto.request.KitchenRequestDTO;
+import com.joelmaciel.food.api.dto.response.KitchenDTO;
 import com.joelmaciel.food.domain.model.Kitchen;
 import com.joelmaciel.food.domain.service.KitchenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,24 +19,24 @@ public class KitchenController {
     private final KitchenService kitchenService;
 
     @GetMapping
-    public List<Kitchen> findAll() {
+    public List<KitchenDTO> findAll() {
         return kitchenService.findAll();
     }
 
     @GetMapping("/{kitchenId}")
-    public Kitchen findById(@PathVariable Long kitchenId) {
+    public KitchenDTO findById(@PathVariable Long kitchenId) {
         return kitchenService.findById(kitchenId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Kitchen add(@RequestBody Kitchen kitchen) {
-        return kitchenService.save(kitchen);
+    public KitchenDTO add(@RequestBody @Valid KitchenRequestDTO kitchenRequestDTO) {
+        return kitchenService.save(kitchenRequestDTO);
     }
 
     @PutMapping("/{kitchenId}")
-    public Kitchen update(@PathVariable Long kitchenId, @RequestBody Kitchen kitchen) {
-        return kitchenService.update(kitchenId, kitchen);
+    public KitchenDTO update(@PathVariable Long kitchenId, @RequestBody @Valid KitchenRequestDTO kitchenRequestDTO) {
+        return kitchenService.update(kitchenId, kitchenRequestDTO);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

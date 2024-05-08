@@ -1,5 +1,8 @@
 package com.joelmaciel.food.domain.service.impl;
 
+import com.joelmaciel.food.api.dto.converter.StateConverter;
+import com.joelmaciel.food.api.dto.request.StateRequestDTO;
+import com.joelmaciel.food.api.dto.response.StateDTO;
 import com.joelmaciel.food.domain.exception.EntityInUseException;
 import com.joelmaciel.food.domain.exception.StateNotFoundException;
 import com.joelmaciel.food.domain.model.State;
@@ -19,27 +22,28 @@ public class StateServiceImpl implements StateService {
     private final StateRepository stateRepository;
 
     @Override
-    public List<State> findAll() {
-        return stateRepository.findAll();
+    public List<StateDTO> findAll() {
+        return StateConverter.toDTOList(stateRepository.findAll());
     }
 
     @Override
-    public State findById(Long stateId) {
-        return optionalState(stateId);
-    }
-
-    @Override
-    @Transactional
-    public State save(State stateRequest) {
-        return stateRepository.save(stateRequest);
+    public StateDTO findById(Long stateId) {
+        return StateConverter.toDTO(optionalState(stateId));
     }
 
     @Override
     @Transactional
-    public State update(Long stateId, State stateRequest) {
+    public StateDTO save(StateRequestDTO stateRequest) {
+        State state = StateConverter.toEntity(stateRequest);
+        return StateConverter.toDTO(stateRepository.save(state));
+    }
+
+    @Override
+    @Transactional
+    public StateDTO update(Long stateId, StateRequestDTO stateRequest) {
         State state = optionalState(stateId);
         state.setName(stateRequest.getName());
-        return save(state);
+        return StateConverter.toDTO(stateRepository.save(state));
     }
 
     @Override
@@ -53,6 +57,7 @@ public class StateServiceImpl implements StateService {
         }
     }
 
+    @Override
     public State optionalState(Long stateId) {
         return stateRepository.findById(stateId)
                 .orElseThrow(() -> new StateNotFoundException(stateId));
