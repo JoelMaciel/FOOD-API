@@ -7,6 +7,6 @@ public class KitchenNotFoundException extends EntityNotFoundException {
     }
 
     public KitchenNotFoundException(Long kitchenId) {
-        this(String.format("Kitchen not found for this id %d : ", kitchenId));
+        this(String.format("Kitchen not found for this id %d", kitchenId));
     }
 }

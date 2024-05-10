@@ -50,7 +50,6 @@ public class KitchenServiceImpl implements KitchenService {
     }
 
     @Override
-    @Transactional
     public void remove(Long kitchenId) {
         try {
             kitchenRepository.deleteById(kitchenId);
@@ -66,5 +65,5 @@ public class KitchenServiceImpl implements KitchenService {
         return kitchenRepository.findById(kitchenId)
                 .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
     }
-
 }
+

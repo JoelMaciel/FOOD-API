@@ -11,5 +11,4 @@ public class KitchenRequestDTO {
 
     @NotBlank
     private String name;
-
 }
