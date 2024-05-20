@@ -1,7 +1,5 @@
 package com.joelmaciel.food.api.controller;
 
-import static io.restassured.RestAssured.*;
-
 import com.joelmaciel.food.api.dto.request.KitchenRequestDTO;
 import com.joelmaciel.food.domain.model.Kitchen;
 import com.joelmaciel.food.domain.repository.KitchenRepository;
@@ -17,6 +15,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -136,9 +135,9 @@ class KitchenControllerTest {
                 .body(updateKitchen)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .when()
+             .when()
                 .put("/{kitchenId}")
-                .then()
+             .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("name", equalTo(nameKitchen));
     }
@@ -154,9 +153,9 @@ class KitchenControllerTest {
                 .body(updateKitchen)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .when()
+             .when()
                 .put("/{kitchenId}")
-                .then()
+             .then()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .body("detail", equalTo(expectedMessageDetail));
     }
