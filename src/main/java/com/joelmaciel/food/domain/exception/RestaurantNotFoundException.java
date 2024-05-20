@@ -7,6 +7,6 @@ public class RestaurantNotFoundException extends EntityNotFoundException {
     }
 
     public RestaurantNotFoundException(Long restaurantId) {
-        this(String.format("Restaurant not found for this id %d : ", restaurantId));
+        this(String.format("Restaurant not found for this id %d", restaurantId));
     }
 }
