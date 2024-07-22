@@ -54,7 +54,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant = optinalRestaurant(restaurantId);
         Kitchen kitchen = kitchenService.optionalKitchen(restaurantRequestDTO.getKitchenId());
 
-        Restaurant updateRestaurant = RestaurantConverter.updateRestaurant(restaurantRequestDTO, restaurant); // Passa o restaurante original
+        Restaurant updateRestaurant = RestaurantConverter.updateRestaurant(restaurantRequestDTO, restaurant);
         updateRestaurant.setKitchen(kitchen);
 
         return RestaurantConverter.toDTO(restaurantRepository.save(updateRestaurant));

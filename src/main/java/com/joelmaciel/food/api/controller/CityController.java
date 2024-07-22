@@ -2,7 +2,6 @@ package com.joelmaciel.food.api.controller;
 
 import com.joelmaciel.food.api.dto.request.CityRequestDTO;
 import com.joelmaciel.food.api.dto.response.CityDTO;
-import com.joelmaciel.food.domain.model.City;
 import com.joelmaciel.food.domain.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

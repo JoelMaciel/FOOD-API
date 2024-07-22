@@ -6,7 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +30,10 @@ public class Restaurant {
     private Address address;
 
     @CreationTimestamp
-    private LocalDateTime registrationDate;
+    private OffsetDateTime registrationDate;
 
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private OffsetDateTime updateDate;
 
 
     @ManyToOne

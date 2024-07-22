@@ -8,6 +8,7 @@ import com.joelmaciel.food.domain.model.State;
 import java.util.List;
 
 public class CityConverter {
+
     private CityConverter() {
     }
 
