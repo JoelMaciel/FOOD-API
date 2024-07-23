@@ -1,14 +1,13 @@
 package com.joelmaciel.food.domain.model;
 
 import com.joelmaciel.food.domain.enums.OrderStatus;
-import com.joelmaciel.food.domain.model.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +29,10 @@ public class Order {
     private OrderStatus status;
 
     @CreationTimestamp
-    private LocalDateTime creationDate;
-    private LocalDateTime confirmationDate;
-    private LocalDateTime cancellationDate;
-    private LocalDateTime deliveryDate;
+    private OffsetDateTime creationDate;
+    private OffsetDateTime confirmationDate;
+    private OffsetDateTime cancellationDate;
+    private OffsetDateTime deliveryDate;
 
     @ManyToOne
     @JoinColumn(nullable = false)

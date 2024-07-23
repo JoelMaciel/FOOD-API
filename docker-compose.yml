@@ -3,21 +3,14 @@ version: '3.8'
 services:
   mysql_dev:
     image: mysql:8.0.28
+    container_name: mysql-food
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: food
+      MYSQL_DATABASE: fooddb
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-
-  mysql_test:
-    image: mysql:8.0.28
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: foodtest
-    ports:
-      - "3307:3306"
 
 volumes:
   mysql-data:

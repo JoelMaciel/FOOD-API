@@ -54,10 +54,24 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant = optinalRestaurant(restaurantId);
         Kitchen kitchen = kitchenService.optionalKitchen(restaurantRequestDTO.getKitchenId());
 
-        Restaurant updateRestaurant = RestaurantConverter.updateRestaurant(restaurantRequestDTO, restaurant); // Passa o restaurante original
+        Restaurant updateRestaurant = RestaurantConverter.updateRestaurant(restaurantRequestDTO, restaurant);
         updateRestaurant.setKitchen(kitchen);
 
         return RestaurantConverter.toDTO(restaurantRepository.save(updateRestaurant));
+    }
+
+    @Transactional
+    @Override
+    public void activate(Long restaurantId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        restaurant.activate();
+    }
+
+    @Transactional
+    @Override
+    public void inactivate(Long restaurantId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        restaurant.inactivate();
     }
 
     public Restaurant optinalRestaurant(Long restaurantId) {

@@ -6,7 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +29,13 @@ public class Restaurant {
     @Embedded
     private Address address;
 
+    private Boolean active = Boolean.TRUE;
+
     @CreationTimestamp
-    private LocalDateTime registrationDate;
+    private OffsetDateTime registrationDate;
 
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private OffsetDateTime updateDate;
 
 
     @ManyToOne
@@ -47,4 +49,12 @@ public class Restaurant {
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
     private List<PaymentMethod> paymentMethods = new ArrayList<>();
+
+    public void activate() {
+        setActive(true);
+    }
+
+    public void inactivate() {
+        setActive(false);
+    }
 }

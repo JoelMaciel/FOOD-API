@@ -4,7 +4,7 @@ import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
 import com.joelmaciel.food.api.dto.response.RestaurantDTO;
 import com.joelmaciel.food.domain.model.Restaurant;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public class RestaurantConverter {
@@ -22,6 +22,7 @@ public class RestaurantConverter {
                 .id(restaurant.getId())
                 .name(restaurant.getName())
                 .freightRate(restaurant.getFreightRate())
+                .active(restaurant.getActive())
                 .kitchen(restaurant.getKitchen())
                 .build();
     }
@@ -37,8 +38,7 @@ public class RestaurantConverter {
         return originalRestaurant.toBuilder()
                 .name(restaurantRequest.getName())
                 .freightRate(restaurantRequest.getFreightRate())
-                .updateDate(LocalDateTime.now())
+                .updateDate(OffsetDateTime.now())
                 .build();
     }
-
 }
