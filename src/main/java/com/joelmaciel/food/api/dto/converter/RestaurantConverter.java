@@ -1,9 +1,7 @@
 package com.joelmaciel.food.api.dto.converter;
 
 import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
-import com.joelmaciel.food.api.dto.response.AddressDTO;
 import com.joelmaciel.food.api.dto.response.RestaurantDTO;
-import com.joelmaciel.food.domain.model.Address;
 import com.joelmaciel.food.domain.model.Restaurant;
 
 import java.time.OffsetDateTime;
@@ -26,7 +24,6 @@ public class RestaurantConverter {
                 .freightRate(restaurant.getFreightRate())
                 .active(restaurant.getActive())
                 .kitchen(restaurant.getKitchen())
-                .address(toAddressDTO(restaurant.getAddress()))
                 .build();
     }
 
@@ -42,17 +39,6 @@ public class RestaurantConverter {
                 .name(restaurantRequest.getName())
                 .freightRate(restaurantRequest.getFreightRate())
                 .updateDate(OffsetDateTime.now())
-                .build();
-    }
-
-    public static AddressDTO toAddressDTO(Address address) {
-        return AddressDTO.builder()
-                .street(address.getStreet())
-                .district(address.getDistrict())
-                .number(address.getNumber())
-                .zipCode(address.getZipCode())
-                .complement(address.getComplement())
-                .city(CityConverter.toDTO(address.getCity()))
                 .build();
     }
 }
