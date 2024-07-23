@@ -22,6 +22,7 @@ public class RestaurantConverter {
                 .id(restaurant.getId())
                 .name(restaurant.getName())
                 .freightRate(restaurant.getFreightRate())
+                .active(restaurant.getActive())
                 .kitchen(restaurant.getKitchen())
                 .build();
     }

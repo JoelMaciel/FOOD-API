@@ -5,6 +5,7 @@ import com.joelmaciel.food.api.dto.response.RestaurantDTO;
 import com.joelmaciel.food.domain.model.Restaurant;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface RestaurantService {
@@ -16,4 +17,8 @@ public interface RestaurantService {
     RestaurantDTO save(RestaurantRequestDTO restaurantRequestDTO);
 
     RestaurantDTO update(Long restaurantId, RestaurantRequestDTO restaurantRequestDTO);
+
+    void activate(Long restaurantId);
+
+    void inactivate(Long restaurantId);
 }

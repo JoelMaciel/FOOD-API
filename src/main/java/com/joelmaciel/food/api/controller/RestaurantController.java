@@ -38,4 +38,16 @@ public class RestaurantController {
         return restaurantService.update(restaurantId, restaurantRequestDTO);
     }
 
+    @PutMapping("/{restaurantId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void active(@PathVariable Long restaurantId) {
+        restaurantService.activate(restaurantId);
+    }
+
+    @PutMapping("/{restaurantId}/inactive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inactive(@PathVariable Long restaurantId) {
+        restaurantService.inactivate(restaurantId);
+    }
+
 }

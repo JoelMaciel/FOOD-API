@@ -60,6 +60,20 @@ public class RestaurantServiceImpl implements RestaurantService {
         return RestaurantConverter.toDTO(restaurantRepository.save(updateRestaurant));
     }
 
+    @Transactional
+    @Override
+    public void activate(Long restaurantId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        restaurant.activate();
+    }
+
+    @Transactional
+    @Override
+    public void inactivate(Long restaurantId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        restaurant.inactivate();
+    }
+
     public Restaurant optinalRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));

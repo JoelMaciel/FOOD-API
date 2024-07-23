@@ -42,12 +42,12 @@ insert into city (id, name, state_id) values (2, 'Los Angeles', 1);
 insert into city (id, name, state_id) values (3, 'Chicago', 2);
 
 
-insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date, address_city_id, address_zip_code, address_street, address_number, address_district) values (1, 'Sushi Sensation', 10, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Main Street', '1000', 'Downtown');
-insert into restaurant (name, freight_rate, kitchen_id, registration_date, update_date)values ('Veggie Delight', 8.50, 1, utc_timestamp, utc_timestamp);
-insert into restaurant (name, freight_rate, kitchen_id, registration_date, update_date) values ('Seafood Shack', 13, 2, utc_timestamp, utc_timestamp);
-insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date) values (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
-insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date) values (5, 'Snack Bar Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
-insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date) values (6, 'Cajun e Creole', 6, 4, utc_timestamp, utc_timestamp);
+insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date, active, address_city_id, address_zip_code, address_street, address_number, address_district) values (1, 'Sushi Sensation', 10, 1, utc_timestamp, utc_timestamp, true, 1, '38400-999', 'Main Street', '1000', 'Downtown');
+insert into restaurant (name, freight_rate, kitchen_id, registration_date, update_date, active)values ('Veggie Delight', 8.50, 1, utc_timestamp, utc_timestamp, true);
+insert into restaurant (name, freight_rate, kitchen_id, registration_date, update_date, active) values ('Seafood Shack', 13, 2, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date, active) values (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date, active) values (5, 'Snack Bar Tio Sam', 11, 4, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id, name, freight_rate, kitchen_id, registration_date, update_date, active) values (6, 'Cajun e Creole', 6, 4, utc_timestamp, utc_timestamp, true);
 
 insert into payment_method (id, description) values (1, 'Credit card');
 insert into payment_method (id, description) values (2, 'Debit card');
