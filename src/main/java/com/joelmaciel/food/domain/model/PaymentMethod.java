@@ -1,10 +1,12 @@
 package com.joelmaciel.food.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
