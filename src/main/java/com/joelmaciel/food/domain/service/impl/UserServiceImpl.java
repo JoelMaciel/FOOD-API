@@ -17,10 +17,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
+    public static final String NOT_MATCH_THE_USER_S_PASSWORD = "Current password does not match the user's password";
     private final UserRepository userRepository;
 
     @Override
@@ -31,11 +34,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserWithPasswordRequestDTO userWithPasswordRequestDTO) {
-        validateEmail(userWithPasswordRequestDTO.getEmail());
+        validateEmail(null, userWithPasswordRequestDTO.getEmail());
 
         User user = UserConverter.toEntity(userWithPasswordRequestDTO);
         return UserConverter.toDTO(userRepository.save(user));
     }
+
 
     @Override
     public UserDTO findById(Long userId) {
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO update(Long userId, UserRequestDTO userRequestDTO) {
         User user = optionalUser(userId);
 
-        validateEmail(userRequestDTO.getEmail());
+        validateEmail(user.getId(), userRequestDTO.getEmail());
 
         User userUpdated = UserConverter.toEntityUpdated(user, userRequestDTO);
         return UserConverter.toDTO(userRepository.save(userUpdated));
@@ -59,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(Long userId, PasswordRequestDTO passwordRequestDTO) {
         User user = optionalUser(userId);
         if (user.passwordDoesNotMatch(passwordRequestDTO.getCurrentPassword())) {
-            throw new BusinessException("Current password does not match the user's password");
+            throw new BusinessException(NOT_MATCH_THE_USER_S_PASSWORD);
         }
         user.setPassword(passwordRequestDTO.getNewPassword());
     }
@@ -70,10 +74,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    private boolean validateEmail(String email) {
-        if (userRepository.existsByEmail(email)) {
+    private void validateEmail(Long userId, String email) {
+        Optional<User> existingUserOpt = userRepository.findByEmail(email);
+        if (existingUserOpt.isPresent() && (userId == null || !existingUserOpt.get().getId().equals(userId))) {
             throw new EmailAlreadyExistingException(email);
         }
-        return false;
     }
+
+
 }
