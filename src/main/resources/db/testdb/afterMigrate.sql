@@ -68,4 +68,4 @@ insert into product (name, description, price, active, restaurant_id) values ('T
 insert into product (name, description, price, active, restaurant_id) values ('X-all Sandwich', 'Big sandwich with lots of cheese, beef hamburger, bacon, egg, salad, and mayonnaise', 19, 1, 5);
 insert into product (name, description, price, active, restaurant_id) values ('Cupim Skewer', 'Served with flour, cassava, and vinaigrette', 8, 1, 6);
 
-
+insert into `group` (name) values ('Manager'), ('Salesperson'), ('Secretary'), ('Register');

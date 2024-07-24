@@ -17,4 +17,6 @@ public interface CityService {
     CityDTO update(Long cityId, CityRequestDTO cityRequest);
 
     void remove(Long cityId);
+
+    City optionalCity(Long cityId);
 }
