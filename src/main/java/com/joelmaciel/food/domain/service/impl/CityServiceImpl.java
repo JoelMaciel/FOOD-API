@@ -78,6 +78,7 @@ public class CityServiceImpl implements CityService {
         }
     }
 
+    @Override
     public City optionalCity(Long cityId) {
         return cityRepository.findById(cityId)
                 .orElseThrow(() -> new CityNotFoundException(cityId));
