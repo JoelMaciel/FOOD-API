@@ -7,8 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -48,7 +49,7 @@ public class Restaurant {
     @JoinTable(name = "restaurant_payment_method",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
-    private List<PaymentMethod> paymentMethods = new ArrayList<>();
+    private Set<PaymentMethod> paymentMethods = new HashSet<>();
 
     public void activate() {
         setActive(true);
@@ -56,5 +57,13 @@ public class Restaurant {
 
     public void inactivate() {
         setActive(false);
+    }
+
+    public boolean removePaymentMethod(PaymentMethod paymentMethod) {
+        return getPaymentMethods().remove(paymentMethod);
+    }
+
+    public boolean associatePaymentMethod(PaymentMethod paymentMethod) {
+        return getPaymentMethods().add(paymentMethod);
     }
 }
