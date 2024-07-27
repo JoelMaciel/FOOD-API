@@ -114,6 +114,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
 
+    @Override
     public Restaurant optinalRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
