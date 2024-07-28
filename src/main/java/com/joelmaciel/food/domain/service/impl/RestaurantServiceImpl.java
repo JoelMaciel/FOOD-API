@@ -113,12 +113,23 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.associatePaymentMethod(paymentMethod);
     }
 
+    @Transactional
+    @Override
+    public void open(Long restaurantId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        restaurant.open();
+    }
+
+    @Transactional
+    @Override
+    public void close(Long restaurantId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        restaurant.close();
+    }
 
     @Override
     public Restaurant optinalRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
     }
-
-
 }

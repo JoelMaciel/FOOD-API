@@ -31,6 +31,7 @@ public class Restaurant {
     private Address address;
 
     private Boolean active = Boolean.TRUE;
+    private Boolean open = Boolean.FALSE;
 
     @CreationTimestamp
     private OffsetDateTime registrationDate;
@@ -65,5 +66,12 @@ public class Restaurant {
 
     public boolean associatePaymentMethod(PaymentMethod paymentMethod) {
         return getPaymentMethods().add(paymentMethod);
+    }
+
+    public void open() {
+        setOpen(true);
+    }
+    public void close() {
+        setOpen(false);
     }
 }

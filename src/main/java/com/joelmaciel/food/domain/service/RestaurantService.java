@@ -31,4 +31,8 @@ public interface RestaurantService {
     void deassociatePaymentMethods(Long restaurantId, Long paymentMethodId);
 
     void associatePaymentMethods(Long restaurantId, Long paymentMethodId);
+
+    void open(Long restaurantId);
+
+    void close(Long restaurantId);
 }
