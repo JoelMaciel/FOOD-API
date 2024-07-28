@@ -2,6 +2,7 @@ package com.joelmaciel.food.domain.service;
 
 import com.joelmaciel.food.api.dto.request.GroupRequestDTO;
 import com.joelmaciel.food.api.dto.response.GroupDTO;
+import com.joelmaciel.food.api.dto.response.PermissionDTO;
 import com.joelmaciel.food.domain.model.Group;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,4 +20,10 @@ public interface GroupService {
     GroupDTO update(GroupRequestDTO groupRequestDTO, Long groupId);
 
     void delete(Long groupId);
+
+    Page<PermissionDTO> findAllPermissions(Long groupId, Pageable pageable);
+
+    void associate(Long groupId, Long permissionId);
+
+    void disassociate(Long groupId, Long permissionId);
 }

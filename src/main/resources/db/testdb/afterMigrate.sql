@@ -68,4 +68,6 @@ insert into product (name, description, price, active, restaurant_id) values ('T
 insert into product (name, description, price, active, restaurant_id) values ('X-all Sandwich', 'Big sandwich with lots of cheese, beef hamburger, bacon, egg, salad, and mayonnaise', 19, 1, 5);
 insert into product (name, description, price, active, restaurant_id) values ('Cupim Skewer', 'Served with flour, cassava, and vinaigrette', 8, 1, 6);
 
-insert into `group` (name) values ('Manager'), ('Salesperson'), ('Secretary'), ('Register');
+insert into `group` (id, name) values (1, 'Manager'), (2, 'Salesperson'), (3, 'Secretary'), (4, 'Register');
+
+insert into group_permission (group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
