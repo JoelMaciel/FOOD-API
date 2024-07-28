@@ -4,6 +4,11 @@ import com.joelmaciel.food.api.dto.request.PaymentMethodRequestDTO;
 import com.joelmaciel.food.api.dto.response.PaymentMethodDTO;
 import com.joelmaciel.food.domain.model.PaymentMethod;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Set;
 
 public class PaymentMethodConverter {
 
@@ -19,6 +24,14 @@ public class PaymentMethodConverter {
 
     public static Page<PaymentMethodDTO> toPageDTO(Page<PaymentMethod> paymentMethods) {
         return paymentMethods.map(PaymentMethodConverter::toDTO);
+    }
+
+
+    public static Page<PaymentMethodDTO> setToPageDTO(Set<PaymentMethod> paymentMethods, Pageable pageable) {
+        List<PaymentMethodDTO> dtoList = paymentMethods.stream()
+                .map(PaymentMethodConverter::toDTO)
+                .toList();
+        return new PageImpl<>(dtoList, pageable, paymentMethods.size());
     }
 
 
