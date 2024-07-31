@@ -2,20 +2,16 @@ package com.joelmaciel.food.domain.service.impl;
 
 import com.joelmaciel.food.api.dto.converter.PaymentMethodConverter;
 import com.joelmaciel.food.api.dto.converter.RestaurantConverter;
+import com.joelmaciel.food.api.dto.converter.UserConverter;
 import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
 import com.joelmaciel.food.api.dto.response.PaymentMethodDTO;
 import com.joelmaciel.food.api.dto.response.RestaurantDTO;
+import com.joelmaciel.food.api.dto.response.UserDTO;
 import com.joelmaciel.food.domain.exception.BusinessException;
 import com.joelmaciel.food.domain.exception.RestaurantNotFoundException;
-import com.joelmaciel.food.domain.model.City;
-import com.joelmaciel.food.domain.model.Kitchen;
-import com.joelmaciel.food.domain.model.PaymentMethod;
-import com.joelmaciel.food.domain.model.Restaurant;
+import com.joelmaciel.food.domain.model.*;
 import com.joelmaciel.food.domain.repository.RestaurantRepository;
-import com.joelmaciel.food.domain.service.CityService;
-import com.joelmaciel.food.domain.service.KitchenService;
-import com.joelmaciel.food.domain.service.PaymentMethodService;
-import com.joelmaciel.food.domain.service.RestaurantService;
+import com.joelmaciel.food.domain.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -35,6 +31,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final KitchenService kitchenService;
     private final CityService cityService;
     private final PaymentMethodService paymentMethodService;
+    private final UserService userService;
 
     @Override
     public List<RestaurantDTO> findAll() {
@@ -125,6 +122,29 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void close(Long restaurantId) {
         Restaurant restaurant = optinalRestaurant(restaurantId);
         restaurant.close();
+    }
+
+    @Override
+    public Page<UserDTO> findAllResponsible(Long restaurantId, Pageable pageable) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        Set<User> responsible = restaurant.getResponsible();
+        return UserConverter.setToPageDTO(responsible, pageable);
+    }
+
+    @Transactional
+    @Override
+    public void associateUser(Long restaurantId, Long userId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        User use = userService.optionalUser(userId);
+        restaurant.addResponsible(use);
+    }
+
+    @Transactional
+    @Override
+    public void disassociateUser(Long restaurantId, Long userId) {
+        Restaurant restaurant = optinalRestaurant(restaurantId);
+        User use = userService.optionalUser(userId);
+        restaurant.removeResponsible(use);
     }
 
     @Override

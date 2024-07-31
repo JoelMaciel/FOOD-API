@@ -26,7 +26,7 @@ public class RestaurantPaymentMethodController {
 
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deassociate(@PathVariable Long restaurantId, @PathVariable Long paymentMethodId) {
+    public void disassociate(@PathVariable Long restaurantId, @PathVariable Long paymentMethodId) {
         restaurantService.deassociatePaymentMethods(restaurantId, paymentMethodId);
     }
 
