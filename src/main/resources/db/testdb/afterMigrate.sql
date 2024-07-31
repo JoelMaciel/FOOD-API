@@ -12,6 +12,7 @@ DELETE FROM restaurant_payment_method;
 DELETE FROM state;
 DELETE FROM `user`;
 DELETE FROM user_group;
+DELETE FROM restaurant_user_responsible;
 
 set foreign_key_checks = 1;
 
@@ -73,9 +74,14 @@ insert into `group` (id, name) values (1, 'Manager'), (2, 'Salesperson'), (3, 'S
 insert into group_permission (group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 INSERT INTO user (id, name, email, password, registration_date) VALUES
-(1, 'John Silva', 'john.ger@algafood.com', '123', utc_timestamp),
-(2, 'Mary Joaquina', 'mary.vnd@algafood.com', '123', utc_timestamp),
-(3, 'Joseph Souza', 'joseph.aux@algafood.com', '123', utc_timestamp),
-(4, 'Sebastian Martins', 'sebastian.cad@algafood.com', '123', utc_timestamp);
+(1, 'John Silva', 'john.ger@algafood.com', '1235678', utc_timestamp),
+(2, 'Mary Joaquina', 'mary.vnd@algafood.com', '1235678', utc_timestamp),
+(3, 'Joseph Souza', 'joseph.aux@algafood.com', '12345678', utc_timestamp),
+(4, 'Sebastian Martins', 'sebastian.cad@algafood.com', '1235678', utc_timestamp),
+(5, 'Michael Johnson', 'michael.johnson@gmail.com', '1235678', utc_timestamp);
+
 
 insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurant_user_responsible (restaurant_id, user_id) values (1, 5), (3, 5);
+
