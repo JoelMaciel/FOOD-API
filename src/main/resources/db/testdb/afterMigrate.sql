@@ -71,3 +71,11 @@ insert into product (name, description, price, active, restaurant_id) values ('C
 insert into `group` (id, name) values (1, 'Manager'), (2, 'Salesperson'), (3, 'Secretary'), (4, 'Register');
 
 insert into group_permission (group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+INSERT INTO user (id, name, email, password, registration_date) VALUES
+(1, 'John Silva', 'john.ger@algafood.com', '123', utc_timestamp),
+(2, 'Mary Joaquina', 'mary.vnd@algafood.com', '123', utc_timestamp),
+(3, 'Joseph Souza', 'joseph.aux@algafood.com', '123', utc_timestamp),
+(4, 'Sebastian Martins', 'sebastian.cad@algafood.com', '123', utc_timestamp);
+
+insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);

@@ -1,15 +1,19 @@
 package com.joelmaciel.food.domain.service.impl;
 
+import com.joelmaciel.food.api.dto.converter.GroupConverter;
 import com.joelmaciel.food.api.dto.converter.UserConverter;
 import com.joelmaciel.food.api.dto.request.PasswordRequestDTO;
 import com.joelmaciel.food.api.dto.request.UserRequestDTO;
 import com.joelmaciel.food.api.dto.request.UserWithPasswordRequestDTO;
+import com.joelmaciel.food.api.dto.response.GroupDTO;
 import com.joelmaciel.food.api.dto.response.UserDTO;
 import com.joelmaciel.food.domain.exception.BusinessException;
 import com.joelmaciel.food.domain.exception.EmailAlreadyExistingException;
 import com.joelmaciel.food.domain.exception.UserNotFoundException;
+import com.joelmaciel.food.domain.model.Group;
 import com.joelmaciel.food.domain.model.User;
 import com.joelmaciel.food.domain.repository.UserRepository;
+import com.joelmaciel.food.domain.service.GroupService;
 import com.joelmaciel.food.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     public static final String NOT_MATCH_THE_USER_S_PASSWORD = "Current password does not match the user's password";
     private final UserRepository userRepository;
+    private final GroupService groupService;
 
     @Override
     public Page<UserDTO> findAll(Pageable pageable) {
@@ -66,6 +72,29 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(NOT_MATCH_THE_USER_S_PASSWORD);
         }
         user.setPassword(passwordRequestDTO.getNewPassword());
+    }
+
+    @Override
+    public Page<GroupDTO> pageUserGroups(Long userId, Pageable pageable) {
+        User user = optionalUser(userId);
+        Set<Group> groups = user.getGroups();
+        return GroupConverter.toDTOPage(groups, pageable);
+    }
+
+    @Transactional
+    @Override
+    public void disassociateGroup(Long userId, Long groupId) {
+        User user = optionalUser(userId);
+        Group group = groupService.optionalGroup(groupId);
+        user.removeGroup(group);
+    }
+
+    @Transactional
+    @Override
+    public void associateGroup(Long userId, Long groupId) {
+        User user = optionalUser(userId);
+        Group group = groupService.optionalGroup(groupId);
+        user.addGroup(group);
     }
 
     @Override

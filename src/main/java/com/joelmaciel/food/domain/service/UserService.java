@@ -3,6 +3,7 @@ package com.joelmaciel.food.domain.service;
 import com.joelmaciel.food.api.dto.request.PasswordRequestDTO;
 import com.joelmaciel.food.api.dto.request.UserRequestDTO;
 import com.joelmaciel.food.api.dto.request.UserWithPasswordRequestDTO;
+import com.joelmaciel.food.api.dto.response.GroupDTO;
 import com.joelmaciel.food.api.dto.response.UserDTO;
 import com.joelmaciel.food.domain.model.User;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,10 @@ public interface UserService {
     UserDTO save(UserWithPasswordRequestDTO userWithPasswordRequestDTO);
 
     void updatePassword(Long userId, PasswordRequestDTO passwordRequestDTO);
+
+    Page<GroupDTO> pageUserGroups(Long userId, Pageable pageable);
+
+    void disassociateGroup(Long userId, Long groupId);
+
+    void associateGroup(Long userId, Long groupId);
 }
