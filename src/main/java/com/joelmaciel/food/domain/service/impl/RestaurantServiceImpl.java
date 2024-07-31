@@ -147,6 +147,26 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.removeResponsible(use);
     }
 
+    @Transactional
+    @Override
+    public void activeSeveralRestaurants(List<Long> restaurantIds) {
+        try {
+            restaurantIds.forEach(this::activate);
+        } catch (RestaurantNotFoundException e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void inactiveSeveralRestaurants(List<Long> restaurantIds) {
+        try {
+            restaurantIds.forEach(this::inactivate);
+        } catch (RestaurantNotFoundException e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
     @Override
     public Restaurant optinalRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
