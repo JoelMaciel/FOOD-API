@@ -42,4 +42,8 @@ public interface RestaurantService {
     void associateUser(Long restaurantId, Long userId);
 
     void disassociateUser(Long restaurantId, Long userId);
+
+    void activeSeveralRestaurants(List<Long> restaurantIds);
+
+    void inactiveSeveralRestaurants(List<Long> restaurantIds);
 }
