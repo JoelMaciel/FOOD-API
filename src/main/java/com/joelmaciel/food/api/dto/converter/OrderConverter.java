@@ -16,7 +16,7 @@ public class OrderConverter {
 
     public static OrderSummaryDTO toSummaryDTO(Order order) {
         return OrderSummaryDTO.builder()
-                .id(order.getId())
+                .code(order.getCode())
                 .subTotal(order.getSubTotal())
                 .freightRate(order.getFreightRate())
                 .totalValue(order.getTotalValue())
@@ -29,7 +29,7 @@ public class OrderConverter {
 
     public static OrderDTO toDTO(Order order) {
         return OrderDTO.builder()
-                .id(order.getId())
+                .code(order.getCode())
                 .subTotal(order.getSubTotal())
                 .freightRate(order.getFreightRate())
                 .totalValue(order.getTotalValue())

@@ -21,30 +21,30 @@ public class StatusOrderServiceImpl implements StatusOrderService {
 
     @Transactional
     @Override
-    public void confirm(Long orderId) {
-        updateOrderStatus(orderId, OrderStatus.CREATED, OrderStatus.CONFIRMED,
+    public void confirm(String codeOrder) {
+        updateOrderStatus(codeOrder, OrderStatus.CREATED, OrderStatus.CONFIRMED,
                 OffsetDateTime.now(), null, null);
     }
 
     @Transactional
     @Override
-    public void deliver(Long orderId) {
-        updateOrderStatus(orderId, OrderStatus.CONFIRMED,
+    public void deliver(String codeOrder) {
+        updateOrderStatus(codeOrder, OrderStatus.CONFIRMED,
                 OrderStatus.DELIVERED, null,
                 OffsetDateTime.now(), null);
     }
 
     @Transactional
     @Override
-    public void cancel(Long orderId) {
-        updateOrderStatus(orderId, OrderStatus.CREATED, OrderStatus.CANCELLED,
+    public void cancel(String codeOrder) {
+        updateOrderStatus(codeOrder, OrderStatus.CREATED, OrderStatus.CANCELLED,
                 null, null, OffsetDateTime.now());
     }
 
-    private void updateOrderStatus(Long orderId, OrderStatus requiredStatus,
+    private void updateOrderStatus(String code, OrderStatus requiredStatus,
                                    OrderStatus newStatus, OffsetDateTime confirmationDate,
                                    OffsetDateTime deliveryDate, OffsetDateTime cancellationDate) {
-        Order order = orderService.optionalOrder(orderId);
+        Order order = orderService.optionalOrder(code);
 
         if (!order.getStatus().equals(requiredStatus)) {
             throw new BusinessException(String.format(

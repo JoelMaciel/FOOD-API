@@ -39,14 +39,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO findById(Long orderId) {
-        return OrderConverter.toDTO(optionalOrder(orderId));
+    public OrderDTO findById(String code) {
+        return OrderConverter.toDTO(optionalOrder(code));
     }
 
     @Override
-    public Order optionalOrder(Long orderId) {
-        return orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException(orderId));
+    public Order optionalOrder(String code) {
+        return orderRepository.findByCode(code)
+                .orElseThrow(() -> new OrderNotFoundException(code));
     }
 
     @Transactional

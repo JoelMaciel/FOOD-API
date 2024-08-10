@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class OrderSummaryDTO {
 
-    private Long id;
+    private String code;
     private BigDecimal subTotal;
     private BigDecimal freightRate;
     private BigDecimal totalValue;

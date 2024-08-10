@@ -2,9 +2,9 @@ package com.joelmaciel.food.domain.service;
 
 public interface StatusOrderService {
 
-    void confirm(Long orderId);
+    void confirm(String codeOrder);
 
-    void deliver(Long orderId);
+    void deliver(String codeOrder);
 
-    void  cancel(Long orderId);
+    void  cancel(String codeOrder);
 }
