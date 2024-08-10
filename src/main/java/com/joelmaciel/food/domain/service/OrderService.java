@@ -1,6 +1,7 @@
 package com.joelmaciel.food.domain.service;
 
 import com.joelmaciel.food.api.dto.response.OrderDTO;
+import com.joelmaciel.food.api.dto.request.OrderRequestDTO;
 import com.joelmaciel.food.api.dto.response.OrderSummaryDTO;
 import com.joelmaciel.food.domain.model.Order;
 import org.springframework.data.domain.Page;
@@ -13,4 +14,6 @@ public interface OrderService {
     OrderDTO findById(Long orderId);
 
     Order optionalOrder(Long orderId);
+
+    OrderDTO addOrder(OrderRequestDTO orderRequestDTO);
 }

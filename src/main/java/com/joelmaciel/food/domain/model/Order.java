@@ -49,21 +49,22 @@ public class Order {
     @JoinColumn(name = "user_client_id", nullable = false)
     private User client;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
     public void calculateTotalValue() {
+        getItems().forEach(OrderItem::calculateTotalValue);
+
         this.subTotal = getItems().stream()
                 .map(OrderItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if (this.freightRate == null) {
+            this.freightRate = BigDecimal.ZERO;
+        }
+
+        this.totalValue = this.subTotal.add(this.freightRate);
     }
 
-    public void setFreightRate() {
-        setFreightRate(getRestaurant().getFreightRate());
-    }
-
-    public void assignOrderToItems() {
-        getItems().forEach(item -> item.setOrder(this));
-    }
 
 }

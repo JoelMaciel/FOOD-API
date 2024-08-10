@@ -109,3 +109,6 @@ values (2, 4, 1, 2, 1, '38400-111', 'Acre Street', '300', 'House 2', 'Downtown',
 insert into order_item (id, order_id, product_id, quantity, unit_price, total_price, observation)
 values (3, 2, 6, 1, 79, 79, 'Medium rare');
 
+alter table `order` auto_increment = 1;
+alter table order_item auto_increment = 1;
+
