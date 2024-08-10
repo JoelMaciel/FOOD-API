@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -15,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             countQuery = "select count(o) from Order o")
     @NonNull
     Page<Order> findAll(@NonNull Pageable pageable);
+
+    Optional<Order> findByCode(String code);
 }

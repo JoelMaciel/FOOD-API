@@ -28,9 +28,9 @@ public class OrderController {
         return orderService.findAll(pageable);
     }
 
-    @GetMapping("/{orderId}")
-    public OrderDTO getOne(@PathVariable Long orderId) {
-        return orderService.findById(orderId);
+    @GetMapping("/{codeOrder}")
+    public OrderDTO getOne(@PathVariable String codeOrder) {
+        return orderService.findById(codeOrder);
     }
 
     @PostMapping

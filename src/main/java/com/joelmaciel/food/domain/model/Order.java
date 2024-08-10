@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -21,6 +22,7 @@ public class Order {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String code;
     private BigDecimal subTotal;
     private BigDecimal freightRate;
     private BigDecimal totalValue;
@@ -66,5 +68,9 @@ public class Order {
         this.totalValue = this.subTotal.add(this.freightRate);
     }
 
+    @PrePersist
+    private void generateCode() {
+        setCode(UUID.randomUUID().toString());
+    }
 
 }

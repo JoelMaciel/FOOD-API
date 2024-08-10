@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
 
-    private Long id;
+    private String code;
     private BigDecimal subTotal;
     private BigDecimal freightRate;
     private BigDecimal totalValue;
