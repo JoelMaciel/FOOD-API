@@ -62,4 +62,16 @@ public class RestaurantController {
         restaurantService.close(restaurantId);
     }
 
+    @PutMapping("/activations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void activateSeveral(@RequestBody List<Long> restaurantIds) {
+        restaurantService.activeSeveralRestaurants(restaurantIds);
+    }
+
+    @DeleteMapping("/inactivations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inactivateSeveral(@RequestBody List<Long> restaurantIds) {
+        restaurantService.inactiveSeveralRestaurants(restaurantIds);
+    }
+
 }

@@ -12,6 +12,10 @@ DELETE FROM restaurant_payment_method;
 DELETE FROM state;
 DELETE FROM `user`;
 DELETE FROM user_group;
+DELETE FROM restaurant_user_responsible;
+DELETE FROM `order`;
+DELETE FROM order_item;
+
 
 set foreign_key_checks = 1;
 
@@ -73,9 +77,38 @@ insert into `group` (id, name) values (1, 'Manager'), (2, 'Salesperson'), (3, 'S
 insert into group_permission (group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 INSERT INTO user (id, name, email, password, registration_date) VALUES
-(1, 'John Silva', 'john.ger@algafood.com', '123', utc_timestamp),
-(2, 'Mary Joaquina', 'mary.vnd@algafood.com', '123', utc_timestamp),
-(3, 'Joseph Souza', 'joseph.aux@algafood.com', '123', utc_timestamp),
-(4, 'Sebastian Martins', 'sebastian.cad@algafood.com', '123', utc_timestamp);
+(1, 'John Silva', 'john.ger@algafood.com', '1235678', utc_timestamp),
+(2, 'Mary Joaquina', 'mary.vnd@algafood.com', '1235678', utc_timestamp),
+(3, 'Joseph Souza', 'joseph.aux@algafood.com', '12345678', utc_timestamp),
+(4, 'Sebastian Martins', 'sebastian.cad@algafood.com', '1235678', utc_timestamp),
+(5, 'Michael Johnson', 'michael.johnson@gmail.com', '1235678', utc_timestamp);
 
 insert into user_group (user_id, group_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurant_user_responsible (restaurant_id, user_id) values (1, 5), (3, 5);
+
+
+insert into `order` (id, code,  restaurant_id, user_client_id, payment_method_id, address_city_id, address_zip_code,
+    address_street, address_number, address_complement, address_district,
+    status, creation_date, sub_total, freight_rate, total_value)
+values (1, '98d75d30-cba5-476c-85a9-acf4fcc1e47b', 1, 1, 1, 1, '38400-000', 'Floriano Peixoto Street', '500', 'Apt 801', 'Brazil',
+'CREATED', utc_timestamp, 298.90, 10, 308.90);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total_price, observation)
+values (1, 1, 1, 1, 78.9, 78.9, null);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total_price, observation)
+values (2, 1, 2, 2, 110, 220, 'Less spicy, please');
+
+insert into `order` (id, code, restaurant_id, user_client_id, payment_method_id, address_city_id, address_zip_code,
+        address_street, address_number, address_complement, address_district,
+        status, creation_date, sub_total, freight_rate, total_value)
+values (2, '462e408e-f069-419b-a331-0113d828af98', 4, 1, 2, 1, '38400-111', 'Acre Street', '300', 'House 2', 'Downtown',
+'CREATED', utc_timestamp, 79, 0, 79);
+
+insert into order_item (id, order_id, product_id, quantity, unit_price, total_price, observation)
+values (3, 2, 6, 1, 79, 79, 'Medium rare');
+
+alter table `order` auto_increment = 1;
+alter table order_item auto_increment = 1;
+

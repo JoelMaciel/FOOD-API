@@ -3,6 +3,7 @@ package com.joelmaciel.food.domain.service;
 import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
 import com.joelmaciel.food.api.dto.response.PaymentMethodDTO;
 import com.joelmaciel.food.api.dto.response.RestaurantDTO;
+import com.joelmaciel.food.api.dto.response.UserDTO;
 import com.joelmaciel.food.domain.model.Restaurant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,4 +36,14 @@ public interface RestaurantService {
     void open(Long restaurantId);
 
     void close(Long restaurantId);
+
+    Page<UserDTO> findAllResponsible(Long restaurantId, Pageable pageable);
+
+    void associateUser(Long restaurantId, Long userId);
+
+    void disassociateUser(Long restaurantId, Long userId);
+
+    void activeSeveralRestaurants(List<Long> restaurantIds);
+
+    void inactiveSeveralRestaurants(List<Long> restaurantIds);
 }
