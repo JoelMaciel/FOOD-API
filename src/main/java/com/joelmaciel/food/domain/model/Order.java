@@ -66,5 +66,4 @@ public class Order {
         this.totalValue = this.subTotal.add(this.freightRate);
     }
 
-
 }
