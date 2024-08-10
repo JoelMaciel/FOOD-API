@@ -2,6 +2,7 @@ package com.joelmaciel.food.api.dto.converter;
 
 import com.joelmaciel.food.api.dto.request.RestaurantRequestDTO;
 import com.joelmaciel.food.api.dto.response.RestaurantDTO;
+import com.joelmaciel.food.api.dto.response.RestaurantSummaryDTO;
 import com.joelmaciel.food.domain.model.Address;
 import com.joelmaciel.food.domain.model.City;
 import com.joelmaciel.food.domain.model.Restaurant;
@@ -28,6 +29,13 @@ public class RestaurantConverter {
                 .open(restaurant.getOpen())
                 .kitchen(restaurant.getKitchen())
                 .address(AddressConverter.toDTO(restaurant.getAddress()))
+                .build();
+    }
+
+    public static RestaurantSummaryDTO toRestaurantSummaryDTO(Restaurant restaurant) {
+        return RestaurantSummaryDTO.builder()
+                .id(restaurant.getId())
+                .name(restaurant.getName())
                 .build();
     }
 

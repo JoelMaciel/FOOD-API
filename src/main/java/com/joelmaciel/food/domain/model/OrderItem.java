@@ -1,13 +1,15 @@
 package com.joelmaciel.food.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class OrderItem {
 
@@ -27,4 +29,17 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Product product;
+
+    public void calculateTotalValue() {
+        BigDecimal unitPrice = this.getUnitPrice();
+        Integer quantity = getQuantity();
+
+        if (unitPrice == null) {
+            unitPrice = BigDecimal.ZERO;
+        }
+        if (quantity == null) {
+            quantity = 0;
+        }
+        this.setTotalPrice(unitPrice.multiply(new BigDecimal(quantity)));
+    }
 }

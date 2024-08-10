@@ -54,7 +54,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     public RestaurantDTO save(RestaurantRequestDTO restaurantRequestDTO) {
         try {
-            City city = cityService.optionalCity(restaurantRequestDTO.getAddress().getCity().getCityId());
+            City city = cityService.optionalCity(restaurantRequestDTO.getAddress().getCity().getId());
             Restaurant restaurant = RestaurantConverter.toEntity(restaurantRequestDTO, city);
             Kitchen kitchen = kitchenService.optionalKitchen(restaurantRequestDTO.getKitchenId());
             restaurant.setKitchen(kitchen);
@@ -69,7 +69,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantDTO update(Long restaurantId, RestaurantRequestDTO restaurantRequestDTO) {
         Restaurant restaurant = optinalRestaurant(restaurantId);
         Kitchen kitchen = kitchenService.optionalKitchen(restaurantRequestDTO.getKitchenId());
-        City city = cityService.optionalCity(restaurantRequestDTO.getAddress().getCity().getCityId());
+        City city = cityService.optionalCity(restaurantRequestDTO.getAddress().getCity().getId());
 
         Restaurant updateRestaurant = RestaurantConverter.updateRestaurant(restaurantRequestDTO, restaurant, city);
         updateRestaurant.setKitchen(kitchen);

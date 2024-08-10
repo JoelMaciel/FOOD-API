@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "`order`")
 public class Order {
 
     @Id
@@ -26,6 +27,8 @@ public class Order {
 
     @Embedded
     private Address addressDelivery;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @CreationTimestamp
@@ -34,7 +37,7 @@ public class Order {
     private OffsetDateTime cancellationDate;
     private OffsetDateTime deliveryDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private PaymentMethod paymentMethod;
 
@@ -46,7 +49,22 @@ public class Order {
     @JoinColumn(name = "user_client_id", nullable = false)
     private User client;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
+
+    public void calculateTotalValue() {
+        getItems().forEach(OrderItem::calculateTotalValue);
+
+        this.subTotal = getItems().stream()
+                .map(OrderItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if (this.freightRate == null) {
+            this.freightRate = BigDecimal.ZERO;
+        }
+
+        this.totalValue = this.subTotal.add(this.freightRate);
+    }
+
 
 }
