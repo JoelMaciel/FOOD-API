@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
-    Page<ProductDTO> findAll(Long restaurantId, Pageable pageable);
+    Page<ProductDTO> findAll(Long restaurantId, Pageable pageable, boolean includeInactive);
 
     Product optionalProductRestaurant(Long restaurantId, Long productId);
 
