@@ -23,10 +23,19 @@ public class ProductServiceImpl implements ProductService {
     private final RestaurantService restaurantService;
 
     @Override
-    public Page<ProductDTO> findAll(Long restaurantId, Pageable pageable) {
+    public Page<ProductDTO> findAll(Long restaurantId, Pageable pageable, boolean includeInactive) {
+        Page<Product> productPage = null;
         Restaurant restaurant = restaurantService.optinalRestaurant(restaurantId);
-        Page<Product> productPage = productRepository.findByRestaurant(restaurant, pageable);
+
+        productPage = getProducts(pageable, includeInactive, restaurant);
+
         return ProductConverter.toPageDTO(productPage);
+    }
+
+    private Page<Product> getProducts(Pageable pageable, boolean includeInactive, Restaurant restaurant) {
+        return includeInactive
+                ? productRepository.findByRestaurant(restaurant, pageable)
+                : productRepository.findActiveByRestaurant(restaurant, pageable);
     }
 
     @Override

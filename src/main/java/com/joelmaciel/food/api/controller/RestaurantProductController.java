@@ -23,8 +23,9 @@ public class RestaurantProductController {
     @GetMapping
     public Page<ProductDTO> getAllProductsRestaurant(
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-            @PathVariable Long restaurantId) {
-        return productService.findAll(restaurantId, pageable);
+            @PathVariable Long restaurantId,
+            @RequestParam(required = false) boolean includeInactive) {
+        return productService.findAll(restaurantId, pageable, includeInactive);
     }
 
     @GetMapping("/{productId}")
