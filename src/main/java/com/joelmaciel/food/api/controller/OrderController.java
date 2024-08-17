@@ -3,7 +3,9 @@ package com.joelmaciel.food.api.controller;
 import com.joelmaciel.food.api.dto.response.OrderDTO;
 import com.joelmaciel.food.api.dto.request.OrderRequestDTO;
 import com.joelmaciel.food.api.dto.response.OrderSummaryDTO;
+import com.joelmaciel.food.domain.repository.filter.OrderFilter;
 import com.joelmaciel.food.domain.service.OrderService;
+import com.joelmaciel.food.infra.repository.spec.OrderSpecs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,10 +24,10 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public Page<OrderSummaryDTO> gelAll(
+    public Page<OrderSummaryDTO> gelAllProducts(OrderFilter orderFilter,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return orderService.findAll(pageable);
+        return orderService.findAll(OrderSpecs.usingFilter(orderFilter),pageable);
     }
 
     @GetMapping("/{codeOrder}")

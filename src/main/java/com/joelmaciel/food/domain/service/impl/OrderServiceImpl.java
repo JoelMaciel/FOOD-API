@@ -11,10 +11,12 @@ import com.joelmaciel.food.domain.exception.BusinessException;
 import com.joelmaciel.food.domain.exception.OrderNotFoundException;
 import com.joelmaciel.food.domain.model.*;
 import com.joelmaciel.food.domain.repository.OrderRepository;
+import com.joelmaciel.food.domain.repository.filter.OrderFilter;
 import com.joelmaciel.food.domain.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +35,8 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
 
     @Override
-    public Page<OrderSummaryDTO> findAll(Pageable pageable) {
-        Page<Order> orders = orderRepository.findAll(pageable);
+    public Page<OrderSummaryDTO> findAll(Specification<Order> orderSpecification, Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(orderSpecification, pageable);
         return OrderConverter.orderDTOPage(orders);
     }
 
