@@ -20,4 +20,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> , JpaSpecifi
     Page<Order> findAll(@NonNull Pageable pageable);
 
     Optional<Order> findByCode(String code);
+
 }

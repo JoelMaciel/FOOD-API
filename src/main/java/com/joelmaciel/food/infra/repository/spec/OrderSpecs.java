@@ -1,7 +1,7 @@
 package com.joelmaciel.food.infra.repository.spec;
 
 import com.joelmaciel.food.domain.model.Order;
-import com.joelmaciel.food.domain.repository.filter.OrderFilter;
+import com.joelmaciel.food.domain.filter.OrderFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
