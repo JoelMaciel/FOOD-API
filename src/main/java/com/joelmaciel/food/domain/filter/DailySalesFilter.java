@@ -1,4 +1,4 @@
-package com.joelmaciel.food.domain.repository.filter;
+package com.joelmaciel.food.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,11 +6,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.OffsetDateTime;
 
-@Setter
 @Getter
-public class OrderFilter {
+@Setter
+public class DailySalesFilter {
 
-    private Long clientId;
     private Long restaurantId;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
