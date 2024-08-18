@@ -13,6 +13,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -122,6 +123,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.CONFLICT;
         ProblemType problemType = ProblemType.ENTITY_IN_USE;
         String detail = ENTITY_IN_USE;
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<?> PropertyReference(PropertyReferenceException ex, WebRequest webRequest) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.INVALID_DATA;
+        String detail = ex.getMessage();
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
