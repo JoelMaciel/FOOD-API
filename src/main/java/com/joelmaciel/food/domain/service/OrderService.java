@@ -6,10 +6,11 @@ import com.joelmaciel.food.api.dto.response.OrderSummaryDTO;
 import com.joelmaciel.food.domain.model.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface OrderService {
 
-    Page<OrderSummaryDTO> findAll(Pageable pageable);
+    Page<OrderSummaryDTO> findAll(Specification<Order> orderSpecification, Pageable pageable);
 
     OrderDTO findById(String codeOrder);
 

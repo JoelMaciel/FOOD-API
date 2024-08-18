@@ -15,6 +15,7 @@ import com.joelmaciel.food.domain.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,8 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
 
     @Override
-    public Page<OrderSummaryDTO> findAll(Pageable pageable) {
-        Page<Order> orders = orderRepository.findAll(pageable);
+    public Page<OrderSummaryDTO> findAll(Specification<Order> orderSpecification, Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(orderSpecification, pageable);
         return OrderConverter.orderDTOPage(orders);
     }
 
@@ -52,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO addOrder(OrderRequestDTO orderRequestDTO) {
-        Order order = toDomainObject(orderRequestDTO);
+        Order order = toEntity(orderRequestDTO);
         validateOrder(orderRequestDTO, order);
         order.calculateTotalValue();
         orderRepository.save(order);
@@ -60,9 +61,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private Order toDomainObject(OrderRequestDTO orderRequestDTO) {
+    private Order toEntity(OrderRequestDTO orderRequestDTO) {
         Restaurant restaurant = restaurantService.optinalRestaurant(orderRequestDTO.getRestaurant().getId());
         City city = cityService.optionalCity(orderRequestDTO.getAddressDelivery().getCity().getId());
+
         Order order = new Order();
         order.setRestaurant(restaurant);
         order.setAddressDelivery(AddressConverter.toEntity(orderRequestDTO.getAddressDelivery(), city));

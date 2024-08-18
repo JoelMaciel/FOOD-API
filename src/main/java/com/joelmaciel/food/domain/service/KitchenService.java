@@ -3,12 +3,12 @@ package com.joelmaciel.food.domain.service;
 import com.joelmaciel.food.api.dto.request.KitchenRequestDTO;
 import com.joelmaciel.food.api.dto.response.KitchenDTO;
 import com.joelmaciel.food.domain.model.Kitchen;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface KitchenService {
 
-    List<KitchenDTO> findAll();
+    Page<KitchenDTO> findAll(Pageable pageable);
 
     KitchenDTO findById(Long kitchenId);
 
