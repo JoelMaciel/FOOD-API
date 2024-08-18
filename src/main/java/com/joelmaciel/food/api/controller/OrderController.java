@@ -3,7 +3,7 @@ package com.joelmaciel.food.api.controller;
 import com.joelmaciel.food.api.dto.response.OrderDTO;
 import com.joelmaciel.food.api.dto.request.OrderRequestDTO;
 import com.joelmaciel.food.api.dto.response.OrderSummaryDTO;
-import com.joelmaciel.food.domain.repository.filter.OrderFilter;
+import com.joelmaciel.food.domain.filter.OrderFilter;
 import com.joelmaciel.food.domain.service.OrderService;
 import com.joelmaciel.food.infra.repository.spec.OrderSpecs;
 import lombok.RequiredArgsConstructor;
