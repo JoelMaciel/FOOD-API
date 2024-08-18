@@ -3,17 +3,14 @@ package com.joelmaciel.food.api.dto.converter;
 import com.joelmaciel.food.api.dto.request.KitchenRequestDTO;
 import com.joelmaciel.food.api.dto.response.KitchenDTO;
 import com.joelmaciel.food.domain.model.Kitchen;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public class KitchenConverter {
     private KitchenConverter() {
     }
 
-    public static List<KitchenDTO> toDTOList(List<Kitchen> kitchens) {
-        return kitchens.stream()
-                .map(KitchenConverter::toDTO)
-                .toList();
+    public static Page<KitchenDTO> toPageDTO(Page<Kitchen> kitchens) {
+        return kitchens.map(KitchenConverter::toDTO);
     }
 
     public static KitchenDTO toDTO(Kitchen kitchen) {

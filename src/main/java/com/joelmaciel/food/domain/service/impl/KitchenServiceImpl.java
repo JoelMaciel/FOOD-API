@@ -11,10 +11,10 @@ import com.joelmaciel.food.domain.service.KitchenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +25,8 @@ public class KitchenServiceImpl implements KitchenService {
     private final KitchenRepository kitchenRepository;
 
     @Override
-    public List<KitchenDTO> findAll() {
-        return KitchenConverter.toDTOList(kitchenRepository.findAll());
+    public Page<KitchenDTO> findAll(Pageable pageable) {
+        return KitchenConverter.toPageDTO(kitchenRepository.findAll(pageable));
     }
 
     @Override
