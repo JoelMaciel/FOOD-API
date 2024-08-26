@@ -21,14 +21,19 @@ public class SalesQueryServiceImpl implements SalesQueryService {
     private EntityManager entityManager;
 
     @Override
-    public List<DailySalesDTO> consultDailySales(DailySalesFilter dailySalesFilter) {
+    public List<DailySalesDTO> consultDailySales(DailySalesFilter dailySalesFilter, String timeOffset) {
         var builder = entityManager.getCriteriaBuilder();
         var query = builder.createQuery(DailySalesDTO.class);
         var root = query.from(Order.class);
         var predicates = new ArrayList<Predicate>();
 
+        var functionConvertTzCreationDate = builder.function(
+                "convert_tz", Date.class,root.get("creationDate"),
+                builder.literal("+00:00"), builder.literal(timeOffset)
+        );
+
         var functionCreationDate = builder.function(
-                "date", Date.class, root.get("creationDate")
+                "date", Date.class, functionConvertTzCreationDate
         );
 
         var selection = builder.construct(DailySalesDTO.class,
@@ -42,7 +47,7 @@ public class SalesQueryServiceImpl implements SalesQueryService {
 
         if (dailySalesFilter.getDateCreationStart() != null) {
             predicates.add(builder.greaterThanOrEqualTo(root.get("creationDate"),
-                    dailySalesFilter.getDateCreationEnd()));
+                    dailySalesFilter.getDateCreationStart()));
         }
         if (dailySalesFilter.getDateCreationEnd() != null) {
             predicates.add(builder.lessThanOrEqualTo(root.get("creationDate"),
