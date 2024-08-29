@@ -1,5 +1,6 @@
 package com.joelmaciel.food.domain.repository;
 
+import com.joelmaciel.food.domain.model.PhotoProduct;
 import com.joelmaciel.food.domain.model.Product;
 import com.joelmaciel.food.domain.model.Restaurant;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryQueries {
 
     @Query("from Product where restaurant.id = :restaurant and id = :product")
     Optional<Product> findById(@Param("restaurant") Long restaurantId, @Param("product") Long productId);
@@ -21,4 +22,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("from Product p where p.active = true and p.restaurant = :restaurant")
     Page<Product> findActiveByRestaurant(Restaurant restaurant, Pageable pageable);
+
+    @Query("select pp from PhotoProduct pp join pp.product p " +
+            " where p.restaurant.id = :restaurantId and pp.product.id = :productId")
+    Optional<PhotoProduct> findPhotoById(Long restaurantId, Long productId);
 }

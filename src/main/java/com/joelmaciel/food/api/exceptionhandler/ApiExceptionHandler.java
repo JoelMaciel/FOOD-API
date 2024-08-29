@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -121,8 +122,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest webRequest) {
         HttpStatus status = HttpStatus.CONFLICT;
-        ProblemType problemType = ProblemType.ENTITY_IN_USE;
-        String detail = ENTITY_IN_USE;
+        ProblemType problemType = ProblemType.INVALID_DATA;
+        String detail = ex.getMessage();
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
@@ -185,22 +186,30 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
 
+        return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+    }
+
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
+                                                            HttpStatus status, WebRequest request, BindingResult bindingResult) {
         ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = "One or more fields are invalid. Fill in correctly and try again.";
 
-        BindingResult bindingResult = ex.getBindingResult();
+        List<Problem.Object> problemObjects = bindingResult.getAllErrors().stream()
+                .map(objectError -> {
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
-        List<Problem.Object> problemObjects = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> {
+                    String name = objectError.getObjectName();
 
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    if (objectError instanceof FieldError) {
+                        name = ((FieldError) objectError).getField();
+                    }
 
                     return Problem.Object.builder()
-                            .name(fieldError.getField())
+                            .name(name)
                             .userMessage(message)
                             .build();
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
