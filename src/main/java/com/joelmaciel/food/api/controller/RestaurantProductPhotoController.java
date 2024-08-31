@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,7 +22,7 @@ public class RestaurantProductPhotoController {
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PhotoProductDTO updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-                                       @Valid PhotoProductRequest photoProductRequest) {
-       return photoProductService.savePhotoProduct(restaurantId, productId, photoProductRequest);
+                                       @Valid PhotoProductRequest photoProductRequest) throws IOException {
+        return photoProductService.savePhotoProduct(restaurantId, productId, photoProductRequest);
     }
 }

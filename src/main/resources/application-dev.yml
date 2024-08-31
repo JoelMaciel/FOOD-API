@@ -20,6 +20,11 @@ spring:
   web:
     resources.add-mappings: false
 
+food:
+  storage:
+    location:
+      photos-directory: /home/joelmaciel/1_Projetos/java/food_api/catalog
+
 logging:
   level:
     com.joelmaciel.food: TRACE

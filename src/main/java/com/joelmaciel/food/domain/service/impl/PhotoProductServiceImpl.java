@@ -6,11 +6,14 @@ import com.joelmaciel.food.domain.model.PhotoProduct;
 import com.joelmaciel.food.domain.model.Product;
 import com.joelmaciel.food.domain.repository.ProductRepository;
 import com.joelmaciel.food.domain.service.PhotoProductService;
+import com.joelmaciel.food.domain.service.PhotoStorageService;
 import com.joelmaciel.food.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Service
@@ -19,34 +22,53 @@ public class PhotoProductServiceImpl implements PhotoProductService {
 
     private final ProductRepository productRepository;
     private final ProductService productService;
+    private final PhotoStorageService photoStorageService;
 
     @Transactional
     @Override
-    public PhotoProductDTO savePhotoProduct(Long restaurantId, Long productId, PhotoProductRequest photoProductRequest) {
-        Product product = validadePhotoProduct(restaurantId, productId);
-        PhotoProduct photoProduct = save(toEntity(product, photoProductRequest));
-        return toDTO(photoProduct);
+    public PhotoProductDTO savePhotoProduct(Long restaurantId, Long productId, PhotoProductRequest photoProductRequest) throws IOException {
+        Product product = validatePhotoProduct(restaurantId, productId);
+
+        String newFileName = photoStorageService.generateFileName(photoProductRequest.getFile().getOriginalFilename());
+
+        PhotoProduct photoProduct = toEntity(product, photoProductRequest, newFileName);
+
+        PhotoProduct savedPhotoProduct = save(photoProduct, photoProductRequest.getFile().getInputStream(), newFileName);
+
+        return toDTO(savedPhotoProduct);
     }
 
-    private Product validadePhotoProduct(Long restaurantId, Long productId) {
+    private Product validatePhotoProduct(Long restaurantId, Long productId) {
         Product product = productService.optionalProductRestaurant(restaurantId, productId);
 
         Optional<PhotoProduct> existingPhoto = productRepository.findPhotoById(restaurantId, productId);
 
-        existingPhoto.ifPresent(productRepository::delete);
+        existingPhoto.ifPresent(photoProduct -> {
+            photoStorageService.remove(photoProduct.getFileName());
+            productRepository.delete(photoProduct);
+        });
         return product;
     }
 
     @Transactional
     @Override
-    public PhotoProduct save(PhotoProduct photoProduct) {
-        return productRepository.save(photoProduct);
+    public PhotoProduct save(PhotoProduct photoProduct, InputStream inputStream, String fileName) {
+        PhotoStorageService.NewPhoto newPhoto = PhotoStorageService
+                .NewPhoto.builder()
+                .fileName(fileName)
+                .inputStream(inputStream)
+                .build();
+
+        photoStorageService.storePhoto(newPhoto);
+        PhotoProduct savedPhotoProduct = productRepository.save(photoProduct);
+        productRepository.flush();
+        return savedPhotoProduct;
     }
 
-    private PhotoProduct toEntity(Product product, PhotoProductRequest photoProductRequest) {
+    private PhotoProduct toEntity(Product product, PhotoProductRequest photoProductRequest, String fileName) {
         return PhotoProduct.builder()
                 .product(product)
-                .fileName(photoProductRequest.getFile().getOriginalFilename())
+                .fileName(fileName)
                 .description(photoProductRequest.getDescription())
                 .contentType(photoProductRequest.getFile().getContentType())
                 .fileSize(photoProductRequest.getFile().getSize())
