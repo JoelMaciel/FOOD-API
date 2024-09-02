@@ -10,11 +10,14 @@ import com.joelmaciel.food.domain.service.PhotoProductService;
 import com.joelmaciel.food.domain.service.PhotoStorageService;
 import com.joelmaciel.food.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +53,27 @@ public class PhotoProductServiceImpl implements PhotoProductService {
         PhotoProduct photoProduct = optionalPhotoProduct(restaurantId, productId);
 
         return toDTO(photoProduct);
+    }
+
+    @Override
+    public InputStream retrievePhoto(Long restaurantId, Long productId, String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+        PhotoProduct photoProduct = optionalPhotoProduct(restaurantId, productId);
+
+        MediaType mediaTypePhoto = MediaType.parseMediaType(photoProduct.getContentType());
+        List<MediaType> mediaTypeAccept = MediaType.parseMediaTypes(acceptHeader);
+
+        checkMediaTypeCompatibility(mediaTypePhoto, mediaTypeAccept);
+        return photoStorageService.recoverPhoto(photoProduct.getFileName());
+    }
+
+    private void checkMediaTypeCompatibility(MediaType mediaTypePhoto, List<MediaType> mediaTypeAccept) throws HttpMediaTypeNotAcceptableException {
+
+        boolean compatibility = mediaTypeAccept.stream()
+                .anyMatch(mediaTypeAccepts -> mediaTypeAccepts.isCompatibleWith(mediaTypePhoto));
+
+        if(!compatibility) {
+            throw new HttpMediaTypeNotAcceptableException(mediaTypeAccept);
+        }
     }
 
     private Product validatePhotoProduct(Long restaurantId, Long productId) {
