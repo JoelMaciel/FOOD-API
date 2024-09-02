@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -34,6 +35,16 @@ public class PhotoStorageServiceImpl implements PhotoStorageService {
             throw new StorageException("Unable to delete file", e);
         }
 
+    }
+
+    @Override
+    public InputStream recoverPhoto(String fileName) {
+        try {
+            Path filePath = getPathFile(fileName);
+            return Files.newInputStream(filePath);
+        } catch (Exception e) {
+            throw new StorageException("Unable to retrieve file.", e);
+        }
     }
 
     private Path getPathFile(String fileName) {

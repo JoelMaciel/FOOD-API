@@ -12,4 +12,8 @@ public interface PhotoProductService {
     PhotoProduct save(PhotoProduct photoProduct, InputStream inputStream, String fileName);
 
     PhotoProductDTO savePhotoProduct(Long restaurantId, Long productId, PhotoProductRequest photoProductRequest) throws IOException;
+
+    PhotoProduct optionalPhotoProduct(Long restaurantId, Long productId);
+
+    PhotoProductDTO findPhoto(Long restaurantId, Long productId);
 }

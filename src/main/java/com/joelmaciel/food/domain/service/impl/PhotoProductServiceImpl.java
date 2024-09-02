@@ -2,6 +2,7 @@ package com.joelmaciel.food.domain.service.impl;
 
 import com.joelmaciel.food.api.dto.request.PhotoProductRequest;
 import com.joelmaciel.food.api.dto.response.PhotoProductDTO;
+import com.joelmaciel.food.domain.exception.PhotoProductNotFoundException;
 import com.joelmaciel.food.domain.model.PhotoProduct;
 import com.joelmaciel.food.domain.model.Product;
 import com.joelmaciel.food.domain.repository.ProductRepository;
@@ -36,6 +37,19 @@ public class PhotoProductServiceImpl implements PhotoProductService {
         PhotoProduct savedPhotoProduct = save(photoProduct, photoProductRequest.getFile().getInputStream(), newFileName);
 
         return toDTO(savedPhotoProduct);
+    }
+
+    @Override
+    public PhotoProduct optionalPhotoProduct(Long restaurantId, Long productId) {
+        return productRepository.findPhotoById(restaurantId, productId)
+                .orElseThrow(() -> new PhotoProductNotFoundException(restaurantId, productId));
+    }
+
+    @Override
+    public PhotoProductDTO findPhoto(Long restaurantId, Long productId) {
+        PhotoProduct photoProduct = optionalPhotoProduct(restaurantId, productId);
+
+        return toDTO(photoProduct);
     }
 
     private Product validatePhotoProduct(Long restaurantId, Long productId) {

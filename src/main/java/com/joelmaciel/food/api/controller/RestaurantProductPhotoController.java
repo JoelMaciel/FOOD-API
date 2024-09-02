@@ -5,10 +5,7 @@ import com.joelmaciel.food.api.dto.response.PhotoProductDTO;
 import com.joelmaciel.food.domain.service.PhotoProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -24,5 +21,10 @@ public class RestaurantProductPhotoController {
     public PhotoProductDTO updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
                                        @Valid PhotoProductRequest photoProductRequest) throws IOException {
         return photoProductService.savePhotoProduct(restaurantId, productId, photoProductRequest);
+    }
+
+    @GetMapping
+    public PhotoProductDTO findPhoto(@PathVariable Long restaurantId, @PathVariable Long productId) {
+        return photoProductService.findPhoto(restaurantId, productId);
     }
 }
